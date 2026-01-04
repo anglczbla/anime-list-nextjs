@@ -1,17 +1,20 @@
 import Image from "next/image";
+
 const AnimeList = ({ title, images }) => {
   return (
-    <div className="grid grid-cols-3 gap-2 h-32">
-      <div className="bg-indigo-500">
-        <Image src={images} width={600} height={600} />
-        <h3>Judul Anime</h3>
-        <p>{title}</p>
+    <div className="bg-indigo-500 shadow-xl rounded-lg overflow-hidden transition-transform hover:scale-105 duration-300 h-full flex flex-col">
+      <div className="relative w-full h-64 md:h-80">
+        <Image 
+          src={images} 
+          alt={title} 
+          fill
+          className="object-cover"
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+        />
       </div>
-      <div className="bg-indigo-500">Kotak 2</div>
-      <div className="bg-indigo-500">Kotak 3</div>
-      <div className="bg-indigo-500">Kotak 4</div>
-      <div className="bg-indigo-500">Kotak 5</div>
-      <div className="bg-indigo-500">Kotak 6</div>
+      <div className="p-4 flex flex-col justify-center flex-grow">
+        <h3 className="font-bold text-white text-md md:text-lg text-center leading-tight">{title}</h3>
+      </div>
     </div>
   );
 };
