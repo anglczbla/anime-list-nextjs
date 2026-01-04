@@ -1,6 +1,7 @@
 "use client";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import axios from "axios";
+import Link from "next/link";
 import { useState } from "react";
 import AnimeList from "./components/AnimeList";
 
@@ -26,18 +27,25 @@ export default function Home() {
   return (
     <div className="p-4">
       <h1 className="text-2xl font-bold mb-4">FEATURED</h1>
-      <div className="grid grid-cols-3 gap-4">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {animeData?.map((anime) => (
-            <div key={anime.mal_id}>
-              <AnimeList
-                title={anime.title}
-                images={anime.images.webp.image_url}
-              />
-            </div>
-          ))}
-        </div>
+      <Link
+        href="/populer"
+        className="text-xl underline hover:text-indigo-500 transition-all"
+      >
+        See All Anime
+      </Link>
+      <div className="grid md:grid-cols-4 sm:grid-cols-3 grid-cols-2 gap-4">
+        {animeData?.map((anime) => (
+          <div key={anime.mal_id} className="h-[400px]">
+            <AnimeList
+              title={anime.title}
+              images={anime.images.webp.image_url}
+              id={anime.mal_id}
+            />
+          </div>
+        ))}
+      </div>
 
+      <div className="flex flex-wrap gap-2 mt-6 justify-center">
         {[...Array(totalPages)].map((_, idx) => (
           <button
             key={idx}
