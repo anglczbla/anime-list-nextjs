@@ -1,14 +1,11 @@
 import Image from "next/image";
-const AnimeList = () => {
+const AnimeList = ({ title, images }) => {
   return (
     <div className="grid grid-cols-3 gap-2 h-32">
       <div className="bg-indigo-500">
-        <Image
-          src="https://picsum.photos/seed/picsum/200/300"
-          width={600}
-          height={600}
-        />
+        <Image src={images} width={600} height={600} />
         <h3>Judul Anime</h3>
+        <p>{title}</p>
       </div>
       <div className="bg-indigo-500">Kotak 2</div>
       <div className="bg-indigo-500">Kotak 3</div>
