@@ -13,7 +13,7 @@ export default function Page({ params }) {
   const { isPending, error, data, isPlaceholderData } = useQuery({
     queryKey: ["anime", keyword, page, limit],
     queryFn: async () => {
-      const url = `${process.env.NEXT_PUBLIC_API_BASE_URL}/anime?q=${keyword}`;
+      const url = `${process.env.NEXT_PUBLIC_API_BASE_URL}/anime?q=${keyword}&page=${page}`;
       const response = await axios.get(url);
       return response.data;
     },
@@ -29,11 +29,7 @@ export default function Page({ params }) {
   return (
     <div>
       <section>
-        <Header
-          title={`Search for ${keyword}`}
-          linkHref="/popular"
-          linkTitle="See All Anime"
-        />
+        <Header title={`Search for ${keyword}`} />
         <AnimeList
           api={searchAnime}
           totalPages={totalPages}

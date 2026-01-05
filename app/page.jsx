@@ -5,7 +5,7 @@ import { useState } from "react";
 import AnimeList from "./_components/AnimeList";
 import Header from "./ui/Header";
 
-export default function Home() {
+export default function Page() {
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(10);
   const { isPending, error, data, isPlaceholderData } = useQuery({
