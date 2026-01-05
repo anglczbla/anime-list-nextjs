@@ -1,17 +1,19 @@
 "use client";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import { useState } from "react";
-import AnimeList from "./_components/AnimeList";
-import Header from "./ui/Header";
+import { use, useState } from "react";
+import AnimeList from "../../_components/AnimeList";
+import Header from "../../ui/Header";
 
-export default function Home() {
+export default function Page({ params }) {
+  const { keyword } = use(params);
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(10);
+
   const { isPending, error, data, isPlaceholderData } = useQuery({
-    queryKey: ["anime", page, limit],
+    queryKey: ["anime", keyword, page, limit],
     queryFn: async () => {
-      const url = `${process.env.NEXT_PUBLIC_API_BASE_URL}/top/anime?limit=${limit}&page=${page}`;
+      const url = `${process.env.NEXT_PUBLIC_API_BASE_URL}/anime?q=${keyword}`;
       const response = await axios.get(url);
       return response.data;
     },
@@ -19,7 +21,7 @@ export default function Home() {
   });
 
   const totalPages = data?.pagination?.last_visible_page;
-  const topAnime = data?.data;
+  const searchAnime = data?.data;
 
   if (isPending) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
@@ -28,12 +30,12 @@ export default function Home() {
     <div>
       <section>
         <Header
-          title="FEATURED"
+          title={`Search for ${keyword}`}
           linkHref="/popular"
           linkTitle="See All Anime"
         />
         <AnimeList
-          api={topAnime}
+          api={searchAnime}
           totalPages={totalPages}
           setPage={setPage}
           page={page}

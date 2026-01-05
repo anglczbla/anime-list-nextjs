@@ -5,22 +5,30 @@ const AnimeList = ({ api, totalPages, setPage, page }) => {
   console.log(api);
 
   return (
-    <div className="grid md:grid-cols-4 sm:grid-cols-3 grid-cols-2 gap-4">
-      {api.map((anime) => {
-        return (
-          <Link href={`/${anime.mal_id}`} className="cursor-pointer">
-            <Image
-              src={anime.images.webp.image_url}
-              alt="..."
-              width={350}
-              height={350}
-              className="object-cover"
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            />
-            <h3 className="font-bold md:text-xl text-md p-4">{anime.title}</h3>
-          </Link>
-        );
-      })}
+    <div>
+      <div className="grid md:grid-cols-4 sm:grid-cols-3 grid-cols-2 gap-4">
+        {api?.map((anime) => {
+          return (
+            <Link
+              key={anime.mal_id}
+              href={`/${anime.mal_id}`}
+              className="cursor-pointer"
+            >
+              <Image
+                src={anime.images.webp.image_url}
+                alt="..."
+                width={350}
+                height={350}
+                className="object-cover"
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              />
+              <h3 className="font-bold md:text-xl text-md p-4">
+                {anime.title}
+              </h3>
+            </Link>
+          );
+        })}
+      </div>
       <div className="flex flex-wrap gap-2 mt-6 justify-center">
         {[...Array(totalPages)].map((_, idx) => (
           <button
