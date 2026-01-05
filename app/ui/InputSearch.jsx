@@ -1,16 +1,35 @@
 "use client";
 
-import { Search } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 
 const InputSearch = () => {
   const searchRef = useRef();
   const router = useRouter();
+  const timeoutRef = useRef(null);
 
-  const handleSearch = (e) => {
-    e.preventDefault();
-    router.push(`/search/${searchRef.current.value}`);
+  useEffect(() => {
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    };
+  }, []);
+
+  const handleInput = () => {
+    const keyword = searchRef.current.value.trim();
+
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
+
+    timeoutRef.current = setTimeout(() => {
+      if (!keyword) {
+        router.push("/");
+      } else {
+        router.push(`/search?q=${encodeURIComponent(keyword)}`);
+      }
+    }, 500);
   };
 
   return (
@@ -20,13 +39,8 @@ const InputSearch = () => {
         placeholder="Search Anime"
         className="w-full p-2 rounded"
         ref={searchRef}
+        onChange={handleInput}
       />
-      <button
-        className="absolute top-1 end-1 cursor-pointer"
-        onClick={handleSearch}
-      >
-        <Search size={32} />
-      </button>
     </div>
   );
 };

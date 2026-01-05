@@ -1,23 +1,25 @@
 "use client";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import { use, useState } from "react";
-import AnimeList from "../../_components/AnimeList";
-import Header from "../../ui/Header";
+import { useSearchParams } from "next/navigation";
+import { useState } from "react";
+import AnimeList from "../_components/AnimeList";
+import Header from "../ui/Header";
 
-export default function Page({ params }) {
-  const { keyword } = use(params);
+export default function SearchPage() {
+  const searchParams = useSearchParams();
+  const keyword = searchParams.get("q") || "";
   const [page, setPage] = useState(1);
-  const [limit, setLimit] = useState(10);
 
-  const { isPending, error, data, isPlaceholderData } = useQuery({
-    queryKey: ["anime", keyword, page, limit],
+  const { isPending, error, data } = useQuery({
+    queryKey: ["anime", keyword, page],
     queryFn: async () => {
       const url = `${process.env.NEXT_PUBLIC_API_BASE_URL}/anime?q=${keyword}&page=${page}`;
       const response = await axios.get(url);
       return response.data;
     },
     placeholderData: keepPreviousData,
+    enabled: !!keyword,
   });
 
   const totalPages = data?.pagination?.last_visible_page;
