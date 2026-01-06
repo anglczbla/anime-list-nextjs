@@ -5,11 +5,13 @@ import { useSearchParams } from "next/navigation";
 import { useState } from "react";
 import AnimeList from "../_components/AnimeList";
 import Header from "../ui/Header";
+import Loading from "../ui/Loading";
 
 export default function SearchPage() {
   const searchParams = useSearchParams();
   const keyword = searchParams.get("q") || "";
   const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(10);
 
   const { isPending, error, data } = useQuery({
     queryKey: ["anime", keyword, page],
@@ -25,19 +27,22 @@ export default function SearchPage() {
   const totalPages = data?.pagination?.last_visible_page;
   const searchAnime = data?.data;
 
-  if (isPending) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
 
   return (
     <div>
       <section>
         <Header title={`Search for ${keyword}`} />
-        <AnimeList
-          api={searchAnime}
-          totalPages={totalPages}
-          setPage={setPage}
-          page={page}
-        />
+        {isPending ? (
+          <Loading />
+        ) : (
+          <AnimeList
+            api={searchAnime}
+            totalPages={totalPages}
+            setPage={setPage}
+            page={page}
+          />
+        )}
       </section>
     </div>
   );

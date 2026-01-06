@@ -4,6 +4,7 @@ import axios from "axios";
 import { useState } from "react";
 import AnimeList from "./_components/AnimeList";
 import Header from "./ui/Header";
+import Loading from "./ui/Loading";
 
 export default function Page() {
   const [page, setPage] = useState(1);
@@ -21,7 +22,6 @@ export default function Page() {
   const totalPages = data?.pagination?.last_visible_page;
   const topAnime = data?.data;
 
-  if (isPending) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
 
   return (
@@ -32,12 +32,16 @@ export default function Page() {
           linkHref="/popular"
           linkTitle="See All Anime"
         />
-        <AnimeList
-          api={topAnime}
-          totalPages={totalPages}
-          setPage={setPage}
-          page={page}
-        />
+        {isPending ? (
+          <Loading />
+        ) : (
+          <AnimeList
+            api={topAnime}
+            totalPages={totalPages}
+            setPage={setPage}
+            page={page}
+          />
+        )}
       </section>
     </div>
   );
