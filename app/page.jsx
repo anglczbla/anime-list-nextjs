@@ -5,10 +5,12 @@ import Header from "./ui/Header";
 import Loading from "./ui/Loading";
 
 export default function Page() {
-  const { isPending, error, data, page, setPage } = useAnimeQuery();
+  const { isPending, error, data, page, setPage } = useAnimeQuery({
+    endpoint: "top/anime",
+  });
 
   const totalPages = data?.pagination?.last_visible_page;
-  const topAnime = data?.data;
+  const topAnime = data;
 
   if (error) return <div>Error: {error.message}</div>;
 

@@ -9,15 +9,20 @@ export default function SearchPage() {
   const searchParams = useSearchParams();
   const keyword = searchParams.get("q") || "";
 
-  const { isPending, error, data, page, setPage } = useAnimeQuery({
+  const {
+    isPending,
+    error,
+    data: searchAnime,
+    page,
+    setPage,
+  } = useAnimeQuery({
     endpoint: "anime",
     initialLimit: 10,
     searchQuery: keyword,
     enabled: !!keyword,
   });
 
-  const totalPages = data?.pagination?.last_visible_page;
-  const searchAnime = data?.data;
+  const totalPages = searchAnime?.pagination?.last_visible_page;
 
   if (error) return <div>Error: {error.message}</div>;
 

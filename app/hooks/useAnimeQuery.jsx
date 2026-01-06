@@ -4,7 +4,7 @@ import axios from "axios";
 import { useState } from "react";
 
 export const useAnimeQuery = ({
-  endpoint = "top/anime",
+  endpoint = "",
   initialLimit = 20,
   searchQuery = "",
   enabled = true,
@@ -22,7 +22,7 @@ export const useAnimeQuery = ({
       }
 
       const response = await axios.get(url);
-      return response.data;
+      return response.data.data;
     },
     placeholderData: keepPreviousData,
     staleTime: 5 * 60 * 1000,

@@ -5,12 +5,18 @@ import HeaderMenu from "../ui/HeaderMenu";
 import Loading from "../ui/Loading";
 
 export default function PopularPage() {
-  const { isPending, error, data, page, setPage } = useAnimeQuery({
+  const {
+    isPending,
+    error,
+    data: popularAnime,
+    page,
+    setPage,
+  } = useAnimeQuery({
+    endpoint: "top/anime",
     initialLimit: 24,
   });
 
-  const popularAnime = data?.data;
-  const totalPages = data?.pagination?.last_visible_page;
+  const totalPages = popularAnime?.pagination?.last_visible_page;
 
   if (error) return <div>Error: {error.message}</div>;
 

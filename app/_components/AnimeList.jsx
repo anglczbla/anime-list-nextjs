@@ -1,6 +1,6 @@
-import Pagination from "../ui/Pagination";
 import Image from "next/image";
 import Link from "next/link";
+import Pagination from "../ui/Pagination";
 
 const AnimeList = ({ api, totalPages, setPage, page }) => {
   return (
@@ -10,7 +10,7 @@ const AnimeList = ({ api, totalPages, setPage, page }) => {
           return (
             <Link
               key={anime.mal_id}
-              href={`/${anime.mal_id}`}
+              href={`/anime/${anime.mal_id}`}
               className="cursor-pointer text-color-blue hover:text-color-accent transition-all"
             >
               <Image

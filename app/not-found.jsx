@@ -1,4 +1,4 @@
-"use clien";
+"use client";
 import { Ban } from "lucide-react";
 import Link from "next/link";
 
