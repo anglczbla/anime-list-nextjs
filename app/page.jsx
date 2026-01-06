@@ -5,12 +5,26 @@ import Header from "./ui/Header";
 import Loading from "./ui/Loading";
 
 export default function Page() {
-  const { isPending, error, data, page, setPage } = useAnimeQuery({
+  const {
+    isPending,
+    error,
+    data: topAnime,
+  } = useAnimeQuery({
     endpoint: "top/anime",
+    initialLimit: 24,
   });
 
-  const totalPages = data?.pagination?.last_visible_page;
-  const topAnime = data;
+  const { isPending: pending, data: recommendation } = useAnimeQuery({
+    endpoint: "recommendations/anime",
+  });
+
+  const recommendAnime = recommendation
+    ?.flatMap((r) => r.entry)
+    .filter(
+      (anime, index, self) =>
+        index === self.findIndex((t) => t.mal_id === anime.mal_id)
+    )
+    .slice(0, 10);
 
   if (error) return <div>Error: {error.message}</div>;
 
@@ -22,17 +36,21 @@ export default function Page() {
           linkHref="/popular"
           linkTitle="See All Anime"
         />
-        {isPending ? (
-          <Loading />
-        ) : (
-          <AnimeList
-            api={topAnime}
-            totalPages={totalPages}
-            setPage={setPage}
-            page={page}
-          />
-        )}
       </section>
+      {isPending || pending ? (
+        <Loading />
+      ) : (
+        <>
+          <section>
+            <AnimeList api={topAnime} />
+          </section>
+
+          <section>
+            <Header title="Anime Recommendations" />
+            <AnimeList api={recommendAnime} />
+          </section>
+        </>
+      )}
     </div>
   );
 }
