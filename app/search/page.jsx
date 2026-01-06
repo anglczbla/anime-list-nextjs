@@ -4,6 +4,7 @@ import AnimeList from "../_components/AnimeList";
 import { useAnimeQuery } from "../hooks/useAnimeQuery";
 import Header from "../ui/Header";
 import Loading from "../ui/Loading";
+import Pagination from "../utils/Pagination";
 
 export default function SearchPage() {
   const searchParams = useSearchParams();
@@ -13,6 +14,7 @@ export default function SearchPage() {
     isPending,
     error,
     data: searchAnime,
+    pagination,
     page,
     setPage,
   } = useAnimeQuery({
@@ -22,7 +24,7 @@ export default function SearchPage() {
     enabled: !!keyword,
   });
 
-  const totalPages = searchAnime?.pagination?.last_visible_page;
+  const totalPages = pagination?.last_visible_page;
 
   if (error) return <div>Error: {error.message}</div>;
 
@@ -40,6 +42,7 @@ export default function SearchPage() {
             page={page}
           />
         )}
+        <Pagination totalPages={totalPages} page={page} setPage={setPage} />
       </section>
     </div>
   );

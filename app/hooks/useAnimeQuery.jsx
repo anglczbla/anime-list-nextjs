@@ -22,7 +22,7 @@ export const useAnimeQuery = ({
       }
 
       const response = await axios.get(url);
-      return response.data.data;
+      return response.data;
     },
     placeholderData: keepPreviousData,
     staleTime: 5 * 60 * 1000,
@@ -32,7 +32,8 @@ export const useAnimeQuery = ({
   return {
     isPending,
     error,
-    data,
+    data: data?.data,
+    pagination: data?.pagination,
     isPlaceholderData,
     page,
     setPage,
