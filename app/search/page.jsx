@@ -1,26 +1,18 @@
 "use client";
-import { keepPreviousData, useQuery } from "@tanstack/react-query";
-import axios from "axios";
 import { useSearchParams } from "next/navigation";
-import { useState } from "react";
 import AnimeList from "../_components/AnimeList";
+import { useAnimeQuery } from "../hooks/useAnimeQuery";
 import Header from "../ui/Header";
 import Loading from "../ui/Loading";
 
 export default function SearchPage() {
   const searchParams = useSearchParams();
   const keyword = searchParams.get("q") || "";
-  const [page, setPage] = useState(1);
-  const [limit, setLimit] = useState(10);
 
-  const { isPending, error, data } = useQuery({
-    queryKey: ["anime", keyword, page],
-    queryFn: async () => {
-      const url = `${process.env.NEXT_PUBLIC_API_BASE_URL}/anime?q=${keyword}&page=${page}`;
-      const response = await axios.get(url);
-      return response.data;
-    },
-    placeholderData: keepPreviousData,
+  const { isPending, error, data, page, setPage } = useAnimeQuery({
+    endpoint: "anime",
+    initialLimit: 10,
+    searchQuery: keyword,
     enabled: !!keyword,
   });
 

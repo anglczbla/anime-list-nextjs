@@ -1,5 +1,13 @@
+import HeaderMenu from "../ui/HeaderMenu";
+import Pagination from "../ui/Pagination";
+
 const page = () => {
-  return <div>popular</div>;
+  return (
+    <div>
+      <HeaderMenu />
+      <Pagination />
+    </div>
+  );
 };
 
 export default page;

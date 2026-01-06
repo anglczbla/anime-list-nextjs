@@ -1,23 +1,11 @@
 "use client";
-import { keepPreviousData, useQuery } from "@tanstack/react-query";
-import axios from "axios";
-import { useState } from "react";
 import AnimeList from "./_components/AnimeList";
+import { useAnimeQuery } from "./hooks/useAnimeQuery";
 import Header from "./ui/Header";
 import Loading from "./ui/Loading";
 
 export default function Page() {
-  const [page, setPage] = useState(1);
-  const [limit, setLimit] = useState(10);
-  const { isPending, error, data, isPlaceholderData } = useQuery({
-    queryKey: ["anime", page, limit],
-    queryFn: async () => {
-      const url = `${process.env.NEXT_PUBLIC_API_BASE_URL}/top/anime?limit=${limit}&page=${page}`;
-      const response = await axios.get(url);
-      return response.data;
-    },
-    placeholderData: keepPreviousData,
-  });
+  const { isPending, error, data, page, setPage } = useAnimeQuery();
 
   const totalPages = data?.pagination?.last_visible_page;
   const topAnime = data?.data;
