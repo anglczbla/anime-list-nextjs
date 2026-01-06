@@ -16,7 +16,7 @@ export default function PopularPage() {
 
   return (
     <div>
-      <HeaderMenu title="Popular" />
+      <HeaderMenu title={`Popular Anime #${page}`} />
       {isPending ? (
         <Loading />
       ) : (

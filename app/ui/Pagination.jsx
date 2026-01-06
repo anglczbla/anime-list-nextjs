@@ -1,4 +1,17 @@
+import { useEffect } from "react";
+
 const Pagination = ({ totalPages, page, setPage }) => {
+  const scrollTop = () => {
+    scrollTo({
+      behavior: "smooth",
+      top: 0,
+    });
+  };
+
+  useEffect(() => {
+    scrollTop();
+  }, [page]);
+
   return (
     <div className="flex flex-wrap gap-2 mt-6 justify-center">
       {[...Array(totalPages)].map((_, idx) => (
