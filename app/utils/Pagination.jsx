@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 
-const Pagination = ({ totalPages, page, setPage }) => {
+const Pagination = ({ page, lastPage, setPage }) => {
   const scrollTop = () => {
     scrollTo({
       behavior: "smooth",
@@ -8,25 +8,41 @@ const Pagination = ({ totalPages, page, setPage }) => {
     });
   };
 
-  useEffect(() => {
+  const handleNextPage = () => {
+    setPage((prevState) => prevState + 1);
     scrollTop();
-  }, [page]);
+  };
+
+  const handlePrevPage = () => {
+    setPage((prevState) => prevState - 1);
+    scrollTop();
+  };
+
+  if (lastPage <= 1) return null;
 
   return (
-    <div className="flex flex-wrap gap-2 mt-6 justify-center">
-      {[...Array(totalPages)].map((_, idx) => (
+    <div className="flex justify-center items-center py-4 px-2 gap-4 text-slate-800 text-lg font-medium">
+      {page > 1 && (
         <button
-          key={idx}
-          onClick={() => setPage(idx + 1)}
-          className={`w-10 h-10 flex items-center justify-center rounded-lg font-semibold transition ${
-            page === idx + 1
-              ? "bg-slate-800 text-white shadow-lg"
-              : "bg-white text-slate-600 border border-slate-200 hover:bg-slate-50"
-          }`}
+          onClick={handlePrevPage}
+          className="transition-all hover:text-indigo-600 underline"
         >
-          {idx + 1}
+          Prev
         </button>
-      ))}
+      )}
+
+      <p>
+        {page} of {lastPage}
+      </p>
+
+      {page < lastPage && (
+        <button
+          onClick={handleNextPage}
+          className="transition-all hover:text-indigo-600 underline"
+        >
+          Next
+        </button>
+      )}
     </div>
   );
 };

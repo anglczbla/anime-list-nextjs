@@ -4,7 +4,7 @@ import AnimeList from "./_components/AnimeList";
 import { useAnimeQuery } from "./hooks/useAnimeQuery";
 import Header from "./ui/Header";
 import Loading from "./ui/Loading";
-import Option from "./ui/Option";
+import Option from "./utils/Option";
 import Pagination from "./utils/Pagination";
 
 export default function Page() {
