@@ -7,18 +7,22 @@ export const useAnimeQuery = ({
   endpoint = "",
   initialLimit = 20,
   searchQuery = "",
+  genres = "",
   enabled = true,
 } = {}) => {
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(initialLimit);
 
   const { isPending, error, data, isPlaceholderData } = useQuery({
-    queryKey: ["anime", endpoint, searchQuery, page, limit],
+    queryKey: ["anime", endpoint, searchQuery, page, limit, genres],
     queryFn: async () => {
       let url = `${process.env.NEXT_PUBLIC_API_BASE_URL}/${endpoint}?limit=${limit}&page=${page}`;
 
       if (searchQuery) {
         url += `&q=${searchQuery}`;
+      }
+      if (genres) {
+        url += `&genres=${genres}`;
       }
 
       const response = await axios.get(url);

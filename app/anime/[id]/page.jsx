@@ -54,7 +54,7 @@ const Page = ({ params }) => {
               </div>
 
               <Image
-                src={anime?.images?.webp?.image_url}
+                src={anime?.images?.webp?.large_image_url}
                 alt={anime?.title || "Anime Image"}
                 width={350}
                 height={350}

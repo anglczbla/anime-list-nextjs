@@ -1,5 +1,6 @@
 "use client";
 import AnimeList from "./_components/AnimeList";
+import GenrePage from "./genres/page";
 import { useAnimeQuery } from "./hooks/useAnimeQuery";
 import Header from "./ui/Header";
 import Loading from "./ui/Loading";
@@ -36,6 +37,9 @@ export default function Page() {
           linkHref="/popular"
           linkTitle="See All Anime"
         />
+      </section>
+      <section>
+        <GenrePage />
       </section>
       {isPending || pending ? (
         <Loading />
