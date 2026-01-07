@@ -2,21 +2,35 @@ import Link from "next/link";
 import { authUserSession } from "../libs/auth";
 import InputSearch from "./InputSearch";
 import UserActionButton from "./UserActionButton";
+
 const Navbar = async () => {
   const user = await authUserSession();
   return (
-    <div>
-      <header className="bg-indigo-500">
-        <div className="flex md:flex-row flex-col justify-between p-4 gap-2">
-          <Link href="/" className="font-bold text-white text-2xl">
-            Anime List
+    <header className="sticky top-0 z-50 glass shadow-sm">
+      <div className="container mx-auto p-4">
+        <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+          <Link
+            href="/"
+            className="font-extrabold text-2xl tracking-tighter text-indigo-600 hover:text-indigo-500 transition-colors"
+          >
+            AnimeList<span className="text-violet-500">.</span>
           </Link>
-          {user ? <Link href="/users/dashboard">Dashboard</Link> : null}
-          <InputSearch />
-          <UserActionButton />
+          
+          <div className="flex flex-col md:flex-row items-center gap-4 w-full md:w-auto">
+             {user && (
+              <Link 
+                href="/users/dashboard" 
+                className="text-sm font-semibold text-slate-600 hover:text-indigo-600 transition-colors"
+              >
+                Dashboard
+              </Link>
+            )}
+            <InputSearch />
+            <UserActionButton />
+          </div>
         </div>
-      </header>
-    </div>
+      </div>
+    </header>
   );
 };
 
