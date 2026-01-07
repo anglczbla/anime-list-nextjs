@@ -2,12 +2,11 @@
 import Image from "next/image";
 import { use } from "react";
 import { useAnimeQuery } from "../../hooks/useAnimeQuery";
-import { authUserSession } from "../../libs/auth";
 import Loading from "../../ui/Loading";
 
-const Page = async ({ params }) => {
+const Page = ({ params }) => {
   const { id } = use(params);
-  const user = await authUserSession();
+
   const {
     isPending,
     error,

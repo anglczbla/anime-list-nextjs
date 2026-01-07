@@ -1,19 +1,17 @@
 "use client";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import AnimeList from "../_components/AnimeList";
 import { useAnimeQuery } from "../hooks/useAnimeQuery";
 import Header from "../ui/Header";
 import Loading from "../ui/Loading";
 import Pagination from "../utils/Pagination";
-import Option from "../utils/Option";
 
 export default function SearchPage() {
   const searchParams = useSearchParams();
-  const router = useRouter();
   const keyword = searchParams.get("q") || "";
   const category = searchParams.get("category") || "";
 
-  const { data: genresList, isPending: loadingGenres } = useAnimeQuery({
+  const { data: genresList } = useAnimeQuery({
     endpoint: "genres/anime",
   });
 
@@ -29,58 +27,44 @@ export default function SearchPage() {
     initialLimit: 10,
     searchQuery: keyword,
     genres: category,
-    enabled: !!keyword,
+    enabled: !!keyword || !!category,
   });
 
-  const totalPages = pagination?.last_visible_page;
+  const lastPage = pagination?.last_visible_page;
 
-  const handleGenreChange = (e) => {
-    const params = new URLSearchParams(searchParams.toString());
-    if (e.target.value) {
-      params.set("category", e.target.value);
-    } else {
-      params.delete("category");
-    }
-    router.push(`?${params.toString()}`);
-    setPage(1);
-  };
+  const selectedGenre = genresList?.find(
+    (g) => g.mal_id.toString() === category
+  );
+
+  let headerTitle = "Search Page";
+  if (keyword && category) {
+    headerTitle = `Search for "${keyword}" in Genre ${selectedGenre?.name || ""}`;
+  } else if (keyword) {
+    headerTitle = `Search for "${keyword}"`;
+  } else if (category) {
+    headerTitle = `Result for Genre ${selectedGenre?.name || ""}`;
+  }
 
   if (error) return <div>Error: {error.message}</div>;
 
   return (
     <div>
       <section className="px-4 py-4 container mx-auto">
-        <div className="flex flex-col md:flex-row items-center gap-4 bg-white p-4 rounded shadow-sm border border-color-primary mb-4">
-          <label className="font-bold text-color-dark whitespace-nowrap">
-            Filter by Genre:
-          </label>
-          {loadingGenres ? (
-            <Loading />
-          ) : (
-            <select
-              className="p-2 border rounded w-full max-w-md cursor-pointer focus:outline-none focus:ring-2 focus:ring-color-accent transition-all"
-              onChange={handleGenreChange}
-              value={category}
-            >
-              <option value="">All Genres</option>
-              {genresList?.map((genre) => (
-                <Option key={genre.mal_id} genre={genre} />
-              ))}
-            </select>
-          )}
-        </div>
-        <Header title={`Search for ${keyword}`} />
+        <Header title={headerTitle} />
         {isPending ? (
           <Loading />
+        ) : searchAnime?.length > 0 ? (
+          <>
+            <AnimeList api={searchAnime} />
+            <Pagination lastPage={lastPage} page={page} setPage={setPage} />
+          </>
         ) : (
-          <AnimeList
-            api={searchAnime}
-            totalPages={totalPages}
-            setPage={setPage}
-            page={page}
-          />
+          <div className="text-center py-10">
+            <h3 className="text-xl font-bold text-color-dark">
+              No anime found for your search.
+            </h3>
+          </div>
         )}
-        <Pagination totalPages={totalPages} page={page} setPage={setPage} />
       </section>
     </div>
   );
