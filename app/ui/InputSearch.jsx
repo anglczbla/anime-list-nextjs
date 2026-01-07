@@ -1,6 +1,6 @@
 "use client";
 
-import { useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef } from "react";
 import { useAnimeQuery } from "../hooks/useAnimeQuery";
 import Option from "../utils/Option";
@@ -9,6 +9,7 @@ const InputSearch = () => {
   const searchRef = useRef();
   const router = useRouter();
   const searchParams = useSearchParams();
+  const pathname = usePathname();
   const timeoutRef = useRef(null);
 
   const { data: genresList } = useAnimeQuery({ endpoint: "genres/anime" });
@@ -22,14 +23,34 @@ const InputSearch = () => {
   }, []);
 
   const updateURL = (keyword, category) => {
-    const params = new URLSearchParams();
-    if (keyword) params.set("q", keyword);
-    if (category) params.set("category", category);
+    const filterablePages = ["/top", "/popular", "/recommendation", "/search"];
+    const isFilterMode = filterablePages.includes(pathname);
 
-    if (!keyword && !category) {
-      router.push("/");
+    if (isFilterMode) {
+      const params = new URLSearchParams(searchParams.toString());
+      params.delete("page");
+
+      if (keyword) {
+        params.set("q", keyword);
+      } else {
+        params.delete("q");
+      }
+
+      if (category) {
+        params.set("category", category);
+      }
+
+      router.push(`${pathname}?${params.toString()}`);
     } else {
-      router.push(`/search?${params.toString()}`);
+      const params = new URLSearchParams();
+      if (keyword) params.set("q", keyword);
+      if (category) params.set("category", category);
+
+      if (!keyword && !category) {
+        router.push("/");
+      } else {
+        router.push(`/search?${params.toString()}`);
+      }
     }
   };
 
