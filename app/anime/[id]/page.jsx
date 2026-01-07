@@ -70,7 +70,7 @@ const Page = ({ params }) => {
         {/* Sidebar */}
         <div className="w-full md:w-1/3 flex flex-col gap-6">
           <Image
-            src={anime?.images?.webp?.large_image_url}
+            src={anime?.images?.jpg?.large_image_url}
             alt={anime?.title || "Anime Image"}
             width={450}
             height={600}
@@ -193,7 +193,7 @@ const Page = ({ params }) => {
           {animeChar?.length > 0 && (
             <div>
               <h4 className="font-bold mb-2 border-b pb-1">Characters</h4>
-              <div className="flex overflow-x-auto gap-3 pb-4 scrollbar-thin scrollbar-thumb-indigo-200 scrollbar-track-slate-50">
+              <div className="flex overflow-x-auto gap-3 pb-4 py-2 scrollbar-thin scrollbar-thumb-indigo-200 scrollbar-track-slate-50">
                 {animeChar.map((char) => {
                   const japaneseVA = char?.voice_actors?.find(
                     (va) => va.language === "Japanese"

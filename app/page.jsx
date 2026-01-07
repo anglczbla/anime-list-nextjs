@@ -14,9 +14,25 @@ export default function Page() {
     initialLimit: 8,
   });
 
-  const { isPending: loadingRecs, data: recommendation } = useAnimeQuery({
+  const {
+    isPending: loadingRecs,
+    error: erroRecs,
+    data: recommendation,
+  } = useAnimeQuery({
     endpoint: "recommendations/anime",
+    initialLimit: 8,
   });
+
+  const {
+    isPending: loadingPop,
+    error: errorPop,
+    data: popularAnime,
+  } = useAnimeQuery({
+    endpoint: "watch/promos/popular",
+    initialLimit: 8,
+  });
+
+  const displayPopular = popularAnime?.map((item) => item.entry).slice(0, 8);
 
   const recommendAnime = recommendation
     ?.flatMap((r) => r.entry)
@@ -24,27 +40,36 @@ export default function Page() {
       (anime, index, self) =>
         index === self.findIndex((t) => t.mal_id === anime.mal_id)
     )
-    .slice(0, 10);
+    .slice(0, 8);
 
-  if (error) return <div>Error: {error.message}</div>;
+  if (error || erroRecs || errorPop) return <div>Error:{error.message} </div>;
 
   return (
     <div>
-      {loadingTop || loadingRecs ? (
+      {loadingTop || loadingRecs || loadingPop ? (
         <Loading />
       ) : (
         <>
           <section className="container mx-auto px-4">
-            <Header
-              title="FEATURED"
-              linkHref="/popular"
-              linkTitle="See All Anime"
-            />
+            <Header title="Top Anime" linkHref="/top" linkTitle="View All" />
             <AnimeList api={topAnime} />
           </section>
 
           <section className="container mx-auto px-4 pb-8">
-            <Header title="Anime Recommendations" />
+            <Header
+              title="Popular Anime"
+              linkHref="/popular"
+              linkTitle="View All"
+            />
+            <AnimeList api={displayPopular} />
+          </section>
+
+          <section className="container mx-auto px-4 pb-8">
+            <Header
+              title="Anime Recommendations"
+              linkHref="/recommendation"
+              linkTitle="View All"
+            />
             <AnimeList api={recommendAnime} />
           </section>
         </>

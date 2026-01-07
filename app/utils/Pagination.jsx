@@ -1,5 +1,3 @@
-import { useEffect } from "react";
-
 const Pagination = ({ page, lastPage, setPage }) => {
   const scrollTop = () => {
     scrollTo({
