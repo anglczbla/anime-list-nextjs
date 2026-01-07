@@ -72,20 +72,17 @@ export default function Page() {
           <label className="font-bold text-color-dark whitespace-nowrap">
             Filter by Genre:
           </label>
-          {loadingGenres ? (
-            <Loading />
-          ) : (
-            <select
-              className="p-2 border rounded w-full max-w-md cursor-pointer focus:outline-none focus:ring-2 focus:ring-color-accent transition-all"
-              onChange={handleGenreChange}
-              value={category}
-            >
-              <option value="">All Genres (Featured)</option>
-              {genresList?.map((genre) => (
-                <Option key={genre.mal_id} genre={genre} />
-              ))}
-            </select>
-          )}
+
+          <select
+            className="p-2 border rounded w-full max-w-md cursor-pointer focus:outline-none focus:ring-2 focus:ring-color-accent transition-all"
+            onChange={handleGenreChange}
+            value={category}
+          >
+            <option value="">All Genres (Featured)</option>
+            {genresList?.map((genre) => (
+              <Option key={genre.mal_id} genre={genre} />
+            ))}
+          </select>
         </div>
       </section>
 
