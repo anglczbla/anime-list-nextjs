@@ -2,10 +2,12 @@
 import Image from "next/image";
 import { use } from "react";
 import { useAnimeQuery } from "../../hooks/useAnimeQuery";
+import { authUserSession } from "../../libs/auth";
 import Loading from "../../ui/Loading";
 
-const Page = ({ params }) => {
+const Page = async ({ params }) => {
   const { id } = use(params);
+  const user = await authUserSession();
   const {
     isPending,
     error,
@@ -13,6 +15,10 @@ const Page = ({ params }) => {
   } = useAnimeQuery({
     endpoint: `anime/${id}`,
   });
+
+  const handleCollection = (e) => {
+    e.preventDefault();
+  };
 
   return (
     <>
@@ -23,6 +29,9 @@ const Page = ({ params }) => {
           <h3 className="text-2xl font-bold mb-4">
             {anime?.title} - {anime?.year}
           </h3>
+          <button onClick={handleCollection} className="px-2 py-1 text-bold">
+            Add To Collection
+          </button>
 
           <div className="flex flex-col md:flex-row gap-6">
             <div className="w-full md:w-1/3 flex flex-col gap-4">

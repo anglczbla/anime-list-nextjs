@@ -1,14 +1,15 @@
 "use client";
 import { Ban } from "lucide-react";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 const NotFound = () => {
+  const router = useRouter();
   return (
     <div>
-      <Link href="/" className="">
+      <button onClick={() => router.back()} className="">
         <Ban />
         Back
-      </Link>
+      </button>
     </div>
   );
 };
