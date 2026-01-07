@@ -2,7 +2,7 @@
 import Image from "next/image";
 import { use } from "react";
 import { useAnimeQuery } from "../../hooks/useAnimeQuery";
-import Loading from "../../ui/Loading";
+import Loading from "../../ui/LoadingDetail";
 
 const Page = ({ params }) => {
   const { id } = use(params);
@@ -19,61 +19,87 @@ const Page = ({ params }) => {
     e.preventDefault();
   };
 
+  if (isPending) return <Loading />;
+  if (error)
+    return (
+      <div className="p-4 text-center text-red-500">Error: {error.message}</div>
+    );
+
   return (
-    <>
-      {isPending ? (
-        <Loading />
-      ) : (
-        <div className="pt-4 px-4 text-slate-800 container mx-auto mb-6">
-          <h3 className="text-2xl font-bold mb-4">
-            {anime?.title} - {anime?.year}
-          </h3>
-          <button onClick={handleCollection} className="px-2 py-1 text-bold">
-            Add To Collection
-          </button>
+    <div className="pt-4 px-4 text-slate-800 container mx-auto mb-6">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
+        <h3 className="text-3xl font-bold text-color-primary">
+          {anime?.title} {anime?.year ? `- ${anime.year}` : ""}
+        </h3>
+        <button
+          onClick={handleCollection}
+          className="px-6 py-2 bg-indigo-600 text-white font-bold rounded shadow-md hover:bg-indigo-700 transition-all"
+        >
+          Add To Collection
+        </button>
+      </div>
 
-          <div className="flex flex-col md:flex-row gap-6">
-            <div className="w-full md:w-1/3 flex flex-col gap-4">
-              <div className="grid grid-cols-2 gap-2 text-center">
-                <div className="w-full flex flex-col justify-center items-center rounded border p-2 bg-white shadow-sm">
-                  <h3 className="font-bold text-gray-700">Rank</h3>
-                  <p>{anime?.rank}</p>
-                </div>
-                <div className="w-full flex flex-col justify-center items-center rounded border p-2 bg-white shadow-sm">
-                  <h3 className="font-bold text-gray-700">Score</h3>
-                  <p>{anime?.score}</p>
-                </div>
-                <div className="w-full flex flex-col justify-center items-center rounded border p-2 bg-white shadow-sm">
-                  <h3 className="font-bold text-gray-700">Duration</h3>
-                  <p>{anime?.duration}</p>
-                </div>
-                <div className="w-full flex flex-col justify-center items-center rounded border p-2 bg-white shadow-sm">
-                  <h3 className="font-bold text-gray-700">Season</h3>
-                  <p>{anime?.season}</p>
-                </div>
-                <div className="w-full flex flex-col justify-center items-center rounded border p-2 bg-white shadow-sm">
-                  <h3 className="font-bold text-gray-700">Episodes</h3>
-                  <p>{anime?.episodes}</p>
-                </div>
-                <div className="w-full flex flex-col justify-center items-center rounded border p-2 bg-white shadow-sm">
-                  <h3 className="font-bold text-gray-700">Type</h3>
-                  <p>{anime?.type}</p>
-                </div>
-              </div>
+      <div className="flex flex-col md:flex-row gap-8">
+        {/* Sidebar */}
+        <div className="w-full md:w-1/3 flex flex-col gap-6">
+          <Image
+            src={anime?.images?.webp?.large_image_url}
+            alt={anime?.title || "Anime Image"}
+            width={450}
+            height={600}
+            className="w-full rounded-xl object-cover shadow-xl"
+            priority
+          />
 
-              <Image
-                src={anime?.images?.webp?.large_image_url}
-                alt={anime?.title || "Anime Image"}
-                width={350}
-                height={350}
-                className="w-full rounded object-cover shadow-md"
-              />
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-2 gap-3 text-center">
+            <div className="flex flex-col justify-center items-center rounded-lg border p-3 bg-white shadow-sm">
+              <h4 className="font-bold text-gray-500 text-sm uppercase">
+                Rank
+              </h4>
+              <p className="text-lg font-semibold">{anime?.rank || "-"}</p>
+            </div>
+            <div className="flex flex-col justify-center items-center rounded-lg border p-3 bg-white shadow-sm">
+              <h4 className="font-bold text-gray-500 text-sm uppercase">
+                Score
+              </h4>
+              <p className="text-lg font-semibold">{anime?.score || "-"}</p>
+            </div>
+            <div className="flex flex-col justify-center items-center rounded-lg border p-3 bg-white shadow-sm">
+              <h4 className="font-bold text-gray-500 text-sm uppercase">
+                Episodes
+              </h4>
+              <p className="text-lg font-semibold">{anime?.episodes || "-"}</p>
+            </div>
+            <div className="flex flex-col justify-center items-center rounded-lg border p-3 bg-white shadow-sm">
+              <h4 className="font-bold text-gray-500 text-sm uppercase">
+                Type
+              </h4>
+              <p className="text-lg font-semibold">{anime?.type || "-"}</p>
+            </div>
+            <div className="flex flex-col justify-center items-center rounded-lg border p-3 bg-white shadow-sm">
+              <h4 className="font-bold text-gray-500 text-sm uppercase">
+                Season
+              </h4>
+              <p className="text-lg font-semibold capitalize">
+                {anime?.season || "-"}
+              </p>
+            </div>
+            <div className="flex flex-col justify-center items-center rounded-lg border p-3 bg-white shadow-sm">
+              <h4 className="font-bold text-gray-500 text-sm uppercase">
+                Status
+              </h4>
+              <p className="text-lg font-semibold">{anime?.status || "-"}</p>
+            </div>
+          </div>
 
+          <div className="flex flex-col gap-4 bg-slate-50 p-4 rounded-lg border">
+            <div>
+              <h4 className="font-bold mb-2 border-b pb-1">Genres</h4>
               <div className="flex flex-wrap gap-2">
                 {anime?.genres?.map((g) => (
                   <span
                     key={g.mal_id}
-                    className="px-3 py-1 bg-slate-200 rounded-full text-sm text-slate-700"
+                    className="px-3 py-1 bg-indigo-100 text-indigo-700 rounded-full text-xs font-medium"
                   >
                     {g.name}
                   </span>
@@ -81,39 +107,79 @@ const Page = ({ params }) => {
               </div>
             </div>
 
-            <div className="w-full md:w-2/3 flex flex-col gap-4">
-              <div className="bg-white p-4 rounded border shadow-sm">
-                <h3 className="text-xl font-bold mb-2">Synopsis</h3>
-                <p className="text-justify text-slate-700 leading-relaxed">
-                  {anime?.synopsis}
-                </p>
+            {anime?.producers?.length > 0 && (
+              <div>
+                <h4 className="font-bold mb-2 border-b pb-1">Producers</h4>
+                <div className="flex flex-wrap gap-2">
+                  {anime.producers.map((p) => (
+                    <span
+                      key={p.mal_id}
+                      className="px-3 py-1 bg-slate-200 text-slate-700 rounded-md text-xs"
+                    >
+                      {p.name}
+                    </span>
+                  ))}
+                </div>
               </div>
+            )}
 
-              {anime?.background && (
-                <div className="bg-white p-4 rounded border shadow-sm">
-                  <h3 className="text-xl font-bold mb-2">Background</h3>
-                  <p className="text-justify text-slate-700 leading-relaxed">
-                    {anime.background}
-                  </p>
+            {anime?.studios?.length > 0 && (
+              <div>
+                <h4 className="font-bold mb-2 border-b pb-1">Studios</h4>
+                <div className="flex flex-wrap gap-2">
+                  {anime.studios.map((s) => (
+                    <span
+                      key={s.mal_id}
+                      className="px-3 py-1 bg-amber-100 text-amber-800 rounded-md text-xs font-semibold"
+                    >
+                      {s.name}
+                    </span>
+                  ))}
                 </div>
-              )}
-
-              {anime?.trailer?.embed_url && (
-                <div className="w-full aspect-video rounded overflow-hidden shadow-md">
-                  <iframe
-                    src={anime.trailer.embed_url}
-                    title="Trailer"
-                    className="w-full h-full"
-                    allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowFullScreen
-                  ></iframe>
-                </div>
-              )}
-            </div>
+              </div>
+            )}
           </div>
         </div>
-      )}
-    </>
+
+        {/* Content */}
+        <div className="w-full md:w-2/3 flex flex-col gap-6">
+          <div className="bg-white p-6 rounded-xl border shadow-sm">
+            <h3 className="text-2xl font-bold mb-4 text-indigo-900">
+              Synopsis
+            </h3>
+            <p className="text-justify text-slate-700 leading-relaxed text-lg">
+              {anime?.synopsis || "No synopsis available."}
+            </p>
+          </div>
+
+          {anime?.background && (
+            <div className="bg-white p-6 rounded-xl border shadow-sm">
+              <h3 className="text-2xl font-bold mb-4 text-indigo-900">
+                Background
+              </h3>
+              <p className="text-justify text-slate-700 leading-relaxed">
+                {anime.background}
+              </p>
+            </div>
+          )}
+
+          {anime?.trailer?.embed_url && (
+            <div className="flex flex-col gap-4">
+              <h3 className="text-2xl font-bold text-indigo-900">Trailer</h3>
+              <div className="w-full aspect-video rounded-xl overflow-hidden shadow-lg border-4 border-white">
+                <iframe
+                  src={anime.trailer.embed_url}
+                  title="Trailer"
+                  className="w-full h-full"
+                  allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                ></iframe>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
   );
 };
 
