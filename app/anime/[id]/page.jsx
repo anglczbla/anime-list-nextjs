@@ -3,6 +3,7 @@ import Image from "next/image";
 import { use } from "react";
 import { useAnimeQuery } from "../../hooks/useAnimeQuery";
 import Loading from "../../ui/LoadingDetail";
+import Statistics from "../../ui/Statistics";
 
 const Page = ({ params }) => {
   const { id } = use(params);
@@ -15,14 +16,40 @@ const Page = ({ params }) => {
     endpoint: `anime/${id}`,
   });
 
+  const {
+    isPending: pendingChar,
+    error: errorChar,
+    data: animeChar,
+  } = useAnimeQuery({
+    endpoint: `anime/${id}/characters`,
+  });
+
+  const {
+    isPending: pendingPic,
+    error: errorPic,
+    data: animePic,
+  } = useAnimeQuery({
+    endpoint: `anime/${id}/pictures`,
+  });
+
+  const {
+    isPending: pendingStac,
+    error: errorStac,
+    data: animeStac,
+  } = useAnimeQuery({
+    endpoint: `anime/${id}/statistics`,
+  });
+
   const handleCollection = (e) => {
     e.preventDefault();
   };
 
-  if (isPending) return <Loading />;
-  if (error)
+  if (isPending || pendingChar || pendingPic || pendingStac) return <Loading />;
+  if (error || errorChar || errorPic || errorStac)
     return (
-      <div className="p-4 text-center text-red-500">Error: {error.message}</div>
+      <div className="p-4 text-center text-red-500">
+        Error: {error?.message}
+      </div>
     );
 
   return (
@@ -142,7 +169,7 @@ const Page = ({ params }) => {
         </div>
 
         {/* Content */}
-        <div className="w-full md:w-2/3 flex flex-col gap-6">
+        <div className="w-full md:w-2/3 flex flex-col gap-8">
           <div className="bg-white p-6 rounded-xl border shadow-sm">
             <h3 className="text-2xl font-bold mb-4 text-indigo-900">
               Synopsis
@@ -163,7 +190,88 @@ const Page = ({ params }) => {
             </div>
           )}
 
-          {anime?.trailer?.embed_url && (
+          {animeChar?.length > 0 && (
+            <div>
+              <h4 className="font-bold mb-2 border-b pb-1">Characters</h4>
+              <div className="flex overflow-x-auto gap-3 pb-4 scrollbar-thin scrollbar-thumb-indigo-200 scrollbar-track-slate-50">
+                {animeChar.map((char) => {
+                  const japaneseVA = char?.voice_actors?.find(
+                    (va) => va.language === "Japanese"
+                  );
+                  return (
+                    <div
+                      key={char?.character?.mal_id}
+                      className="min-w-[120px] w-[120px] flex-shrink-0 flex flex-col items-center bg-white p-2 rounded-lg shadow-sm border snap-start transition-transform hover:scale-105 justify-between"
+                    >
+                      <div className="flex flex-col items-center w-full">
+                        <div className="relative w-full aspect-[3/4] overflow-hidden rounded mb-2 shadow-sm">
+                          <Image
+                            src={char?.character?.images?.webp?.image_url}
+                            alt={char?.character?.name}
+                            fill
+                            className="object-cover"
+                            sizes="120px"
+                          />
+                        </div>
+                        <p className="text-[10px] font-bold text-center leading-tight line-clamp-2 mb-1 text-indigo-900">
+                          {char?.character?.name}
+                        </p>
+                        <p className="text-[9px] text-slate-500 text-center font-medium bg-slate-100 px-2 py-0.5 rounded-full mb-2">
+                          {char?.role}
+                        </p>
+                      </div>
+
+                      {japaneseVA && (
+                        <div className="flex flex-col items-center w-full pt-2 border-t border-dashed border-slate-200">
+                          <div className="relative w-10 h-10 rounded-full overflow-hidden border border-slate-200 mb-1">
+                            <Image
+                              src={japaneseVA.person.images.jpg.image_url}
+                              alt={japaneseVA.person.name}
+                              fill
+                              className="object-cover"
+                              sizes="40px"
+                            />
+                          </div>
+                          <p className="text-[9px] text-center leading-tight line-clamp-2 text-slate-700 font-medium">
+                            {japaneseVA.person.name}
+                          </p>
+                          <p className="text-[8px] text-slate-400">Japanese</p>
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+
+          {animePic?.length > 0 && (
+            <div>
+              <h4 className="text-xl font-bold mb-4 text-indigo-900 border-b pb-2">
+                Gallery
+              </h4>
+              <div className="flex overflow-x-auto gap-3 pb-4 scrollbar-thin scrollbar-thumb-indigo-200 scrollbar-track-slate-50">
+                {animePic.map((pic, index) => (
+                  <div
+                    key={index}
+                    className="min-w-[200px] h-[300px] flex-shrink-0 relative rounded-lg overflow-hidden shadow-sm border snap-start hover:shadow-md transition-all"
+                  >
+                    <Image
+                      src={pic?.jpg?.large_image_url || pic?.jpg?.image_url}
+                      alt={`Gallery ${index}`}
+                      fill
+                      className="object-cover hover:scale-110 transition-transform duration-500"
+                      sizes="200px"
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {animeStac && <Statistics statistics={animeStac} />}
+
+          {(anime?.trailer?.youtube_id || anime?.trailer?.embed_url) && (
             <div className="flex flex-col gap-4">
               <h3 className="text-2xl font-bold text-indigo-900">Trailer</h3>
               <div className="w-full aspect-video rounded-xl overflow-hidden shadow-lg border-4 border-white">
