@@ -22,6 +22,12 @@ const InputSearch = () => {
     };
   }, []);
 
+  useEffect(() => {
+    if (searchRef.current) {
+      searchRef.current.value = searchParams.get("q") || "";
+    }
+  }, [searchParams]);
+
   const updateURL = (keyword, category) => {
     const filterablePages = ["/top", "/popular", "/recommendation", "/search"];
     const isFilterMode = filterablePages.includes(pathname);
@@ -38,6 +44,8 @@ const InputSearch = () => {
 
       if (category) {
         params.set("category", category);
+      } else {
+        params.delete("category");
       }
 
       router.push(`${pathname}?${params.toString()}`);

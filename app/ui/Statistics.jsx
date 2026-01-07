@@ -10,74 +10,70 @@ const Statistics = ({ statistics }) => {
     scores,
   } = statistics;
 
+  // Calculate Weighted Average Score
   const totalVotes = scores.reduce((acc, curr) => acc + curr.votes, 0);
+  const totalWeightedScore = scores.reduce(
+    (acc, curr) => acc + curr.score * curr.votes,
+    0
+  );
+  const averageScore =
+    totalVotes > 0 ? (totalWeightedScore / totalVotes).toFixed(2) : "0.00";
+
+  const statsList = [
+    { label: "Avg Score", value: averageScore },
+    { label: "Watching", value: watching },
+    { label: "Completed", value: completed },
+    { label: "On Hold", value: on_hold },
+    { label: "Dropped", value: dropped },
+    { label: "Plan to Watch", value: plan_to_watch },
+  ];
+
+  const StatCard = ({ label, value }) => (
+    <div className="flex flex-col justify-center items-center rounded-lg border p-2 bg-white shadow-sm hover:shadow-md transition-shadow">
+      <h4 className="font-bold text-gray-500 text-xs uppercase">{label}</h4>
+      <p className="text-md font-semibold text-slate-800">
+        {typeof value === "number" ? value.toLocaleString() : value}
+      </p>
+    </div>
+  );
 
   return (
-    <div className="flex flex-col gap-6">
-      <div className="bg-white p-6 rounded-xl border shadow-sm">
-        <h3 className="text-xl font-bold mb-4 text-indigo-900">
-          Status Distribution
+    <div className="flex flex-col gap-4">
+      <div className="bg-slate-50 p-3 rounded-lg border">
+        <h3 className="text-md font-bold mb-2 text-indigo-900 border-b pb-1">
+          User Statistics
         </h3>
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 text-center">
-          <div className="p-3 bg-blue-50 rounded-lg">
-            <h5 className="text-sm text-gray-600 font-semibold">Watching</h5>
-            <p className="text-lg font-bold text-blue-600">
-              {watching.toLocaleString()}
-            </p>
-          </div>
-          <div className="p-3 bg-green-50 rounded-lg">
-            <h5 className="text-sm text-gray-600 font-semibold">Completed</h5>
-            <p className="text-lg font-bold text-green-600">
-              {completed.toLocaleString()}
-            </p>
-          </div>
-          <div className="p-3 bg-yellow-50 rounded-lg">
-            <h5 className="text-sm text-gray-600 font-semibold">On Hold</h5>
-            <p className="text-lg font-bold text-yellow-600">
-              {on_hold.toLocaleString()}
-            </p>
-          </div>
-          <div className="p-3 bg-red-50 rounded-lg">
-            <h5 className="text-sm text-gray-600 font-semibold">Dropped</h5>
-            <p className="text-lg font-bold text-red-600">
-              {dropped.toLocaleString()}
-            </p>
-          </div>
-          <div className="p-3 bg-gray-50 rounded-lg sm:col-span-2">
-            <h5 className="text-sm text-gray-600 font-semibold">
-              Plan to Watch
-            </h5>
-            <p className="text-lg font-bold text-gray-600">
-              {plan_to_watch.toLocaleString()}
-            </p>
-          </div>
+        <div className="grid grid-cols-2 gap-2 text-center">
+          {statsList.map((stat) => (
+            <StatCard key={stat.label} label={stat.label} value={stat.value} />
+          ))}
         </div>
       </div>
 
-      <div className="bg-white p-6 rounded-xl border shadow-sm">
-        <h3 className="text-xl font-bold mb-4 text-indigo-900">
-          Score Distribution
+      <div className="bg-slate-50 p-3 rounded-lg border">
+        <h3 className="text-md font-bold mb-2 text-indigo-900 border-b pb-1">
+          Score Stats
         </h3>
         <div className="flex flex-col gap-2">
-          {scores.slice().reverse().map((scoreItem) => (
-            <div key={scoreItem.score} className="flex items-center gap-2">
-              <span className="w-4 text-sm font-bold text-gray-700">
-                {scoreItem.score}
-              </span>
-              <div className="flex-1 h-3 bg-gray-200 rounded-full overflow-hidden">
-                <div
-                  className="h-full bg-indigo-500 rounded-full"
-                  style={{ width: `${scoreItem.percentage}%` }}
-                ></div>
+          {scores
+            .slice()
+            .reverse()
+            .map((scoreItem) => (
+              <div key={scoreItem.score} className="flex items-center gap-2">
+                <span className="w-4 text-xs font-bold text-gray-700">
+                  {scoreItem.score}
+                </span>
+                <div className="flex-1 h-2 bg-gray-200 rounded-full overflow-hidden">
+                  <div
+                    className="h-full bg-indigo-500 rounded-full"
+                    style={{ width: `${scoreItem.percentage}%` }}
+                  ></div>
+                </div>
+                <span className="text-xs text-gray-500 w-10 text-right">
+                  {scoreItem.percentage}%
+                </span>
               </div>
-              <span className="text-xs text-gray-500 w-12 text-right">
-                {scoreItem.percentage}%
-              </span>
-              <span className="text-xs text-gray-400 w-16 text-right">
-                ({scoreItem.votes.toLocaleString()})
-              </span>
-            </div>
-          ))}
+            ))}
         </div>
       </div>
     </div>

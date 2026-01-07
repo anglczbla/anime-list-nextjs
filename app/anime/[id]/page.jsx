@@ -54,8 +54,8 @@ const Page = ({ params }) => {
 
   return (
     <div className="pt-4 px-4 text-slate-800 container mx-auto mb-6">
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
-        <h3 className="text-3xl font-bold text-color-primary">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-4">
+        <h3 className="text-2xl md:text-3xl font-bold text-color-primary">
           {anime?.title} {anime?.year ? `- ${anime.year}` : ""}
         </h3>
         <button
@@ -66,67 +66,72 @@ const Page = ({ params }) => {
         </button>
       </div>
 
-      <div className="flex flex-col md:flex-row gap-8">
+      <div className="flex flex-col md:flex-row gap-6">
         {/* Sidebar */}
-        <div className="w-full md:w-1/3 flex flex-col gap-6">
+        <div className="w-full md:w-1/3 flex flex-col gap-4">
           <Image
-            src={anime?.images?.jpg?.large_image_url}
+            src={
+              anime?.images?.webp?.large_image_url ||
+              anime?.images?.jpg?.large_image_url
+            }
             alt={anime?.title || "Anime Image"}
             width={450}
             height={600}
-            className="w-full rounded-xl object-cover shadow-xl"
+            className="w-full h-auto rounded-xl object-cover shadow-xl"
             priority
+            quality={95}
+            sizes="(max-width: 768px) 100vw, 33vw"
           />
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-2 gap-3 text-center">
-            <div className="flex flex-col justify-center items-center rounded-lg border p-3 bg-white shadow-sm">
-              <h4 className="font-bold text-gray-500 text-sm uppercase">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-2 gap-2 text-center">
+            <div className="flex flex-col justify-center items-center rounded-lg border p-2 bg-white shadow-sm">
+              <h4 className="font-bold text-gray-500 text-xs uppercase">
                 Rank
               </h4>
-              <p className="text-lg font-semibold">{anime?.rank || "-"}</p>
+              <p className="text-md font-semibold">{anime?.rank || "-"}</p>
             </div>
-            <div className="flex flex-col justify-center items-center rounded-lg border p-3 bg-white shadow-sm">
-              <h4 className="font-bold text-gray-500 text-sm uppercase">
+            <div className="flex flex-col justify-center items-center rounded-lg border p-2 bg-white shadow-sm">
+              <h4 className="font-bold text-gray-500 text-xs uppercase">
                 Score
               </h4>
-              <p className="text-lg font-semibold">{anime?.score || "-"}</p>
+              <p className="text-md font-semibold">{anime?.score || "-"}</p>
             </div>
-            <div className="flex flex-col justify-center items-center rounded-lg border p-3 bg-white shadow-sm">
-              <h4 className="font-bold text-gray-500 text-sm uppercase">
+            <div className="flex flex-col justify-center items-center rounded-lg border p-2 bg-white shadow-sm">
+              <h4 className="font-bold text-gray-500 text-xs uppercase">
                 Episodes
               </h4>
-              <p className="text-lg font-semibold">{anime?.episodes || "-"}</p>
+              <p className="text-md font-semibold">{anime?.episodes || "-"}</p>
             </div>
-            <div className="flex flex-col justify-center items-center rounded-lg border p-3 bg-white shadow-sm">
-              <h4 className="font-bold text-gray-500 text-sm uppercase">
+            <div className="flex flex-col justify-center items-center rounded-lg border p-2 bg-white shadow-sm">
+              <h4 className="font-bold text-gray-500 text-xs uppercase">
                 Type
               </h4>
-              <p className="text-lg font-semibold">{anime?.type || "-"}</p>
+              <p className="text-md font-semibold">{anime?.type || "-"}</p>
             </div>
-            <div className="flex flex-col justify-center items-center rounded-lg border p-3 bg-white shadow-sm">
-              <h4 className="font-bold text-gray-500 text-sm uppercase">
+            <div className="flex flex-col justify-center items-center rounded-lg border p-2 bg-white shadow-sm">
+              <h4 className="font-bold text-gray-500 text-xs uppercase">
                 Season
               </h4>
-              <p className="text-lg font-semibold capitalize">
+              <p className="text-md font-semibold capitalize">
                 {anime?.season || "-"}
               </p>
             </div>
-            <div className="flex flex-col justify-center items-center rounded-lg border p-3 bg-white shadow-sm">
-              <h4 className="font-bold text-gray-500 text-sm uppercase">
+            <div className="flex flex-col justify-center items-center rounded-lg border p-2 bg-white shadow-sm">
+              <h4 className="font-bold text-gray-500 text-xs uppercase">
                 Status
               </h4>
-              <p className="text-lg font-semibold">{anime?.status || "-"}</p>
+              <p className="text-md font-semibold">{anime?.status || "-"}</p>
             </div>
           </div>
 
-          <div className="flex flex-col gap-4 bg-slate-50 p-4 rounded-lg border">
+          <div className="flex flex-col gap-3 bg-slate-50 p-3 rounded-lg border">
             <div>
-              <h4 className="font-bold mb-2 border-b pb-1">Genres</h4>
+              <h4 className="font-bold mb-2 border-b pb-1 text-sm">Genres</h4>
               <div className="flex flex-wrap gap-2">
                 {anime?.genres?.map((g) => (
                   <span
                     key={g.mal_id}
-                    className="px-3 py-1 bg-indigo-100 text-indigo-700 rounded-full text-xs font-medium"
+                    className="px-2 py-1 bg-indigo-100 text-indigo-700 rounded-full text-xs font-medium"
                   >
                     {g.name}
                   </span>
@@ -136,12 +141,14 @@ const Page = ({ params }) => {
 
             {anime?.producers?.length > 0 && (
               <div>
-                <h4 className="font-bold mb-2 border-b pb-1">Producers</h4>
+                <h4 className="font-bold mb-2 border-b pb-1 text-sm">
+                  Producers
+                </h4>
                 <div className="flex flex-wrap gap-2">
                   {anime.producers.map((p) => (
                     <span
                       key={p.mal_id}
-                      className="px-3 py-1 bg-slate-200 text-slate-700 rounded-md text-xs"
+                      className="px-2 py-1 bg-slate-200 text-slate-700 rounded-md text-xs"
                     >
                       {p.name}
                     </span>
@@ -152,12 +159,14 @@ const Page = ({ params }) => {
 
             {anime?.studios?.length > 0 && (
               <div>
-                <h4 className="font-bold mb-2 border-b pb-1">Studios</h4>
+                <h4 className="font-bold mb-2 border-b pb-1 text-sm">
+                  Studios
+                </h4>
                 <div className="flex flex-wrap gap-2">
                   {anime.studios.map((s) => (
                     <span
                       key={s.mal_id}
-                      className="px-3 py-1 bg-amber-100 text-amber-800 rounded-md text-xs font-semibold"
+                      className="px-2 py-1 bg-amber-100 text-amber-800 rounded-md text-xs font-semibold"
                     >
                       {s.name}
                     </span>
@@ -166,25 +175,25 @@ const Page = ({ params }) => {
               </div>
             )}
           </div>
+
+          {animeStac && <Statistics statistics={animeStac} />}
         </div>
 
         {/* Content */}
-        <div className="w-full md:w-2/3 flex flex-col gap-8">
-          <div className="bg-white p-6 rounded-xl border shadow-sm">
-            <h3 className="text-2xl font-bold mb-4 text-indigo-900">
-              Synopsis
-            </h3>
-            <p className="text-justify text-slate-700 leading-relaxed text-lg">
+        <div className="w-full md:w-2/3 flex flex-col gap-6">
+          <div className="bg-white p-4 rounded-xl border shadow-sm">
+            <h3 className="text-2xl font-bold mb-2 text-indigo-900">Synopsis</h3>
+            <p className="text-justify text-slate-700 leading-relaxed text-md">
               {anime?.synopsis || "No synopsis available."}
             </p>
           </div>
 
           {anime?.background && (
-            <div className="bg-white p-6 rounded-xl border shadow-sm">
-              <h3 className="text-2xl font-bold mb-4 text-indigo-900">
+            <div className="bg-white p-4 rounded-xl border shadow-sm">
+              <h3 className="text-2xl font-bold mb-2 text-indigo-900">
                 Background
               </h3>
-              <p className="text-justify text-slate-700 leading-relaxed">
+              <p className="text-justify text-slate-700 leading-relaxed text-md">
                 {anime.background}
               </p>
             </div>
@@ -192,7 +201,9 @@ const Page = ({ params }) => {
 
           {animeChar?.length > 0 && (
             <div>
-              <h4 className="font-bold mb-2 border-b pb-1">Characters</h4>
+              <h4 className="font-bold mb-2 border-b pb-1 text-2xl text-indigo-900">
+                Characters
+              </h4>
               <div className="flex overflow-x-auto gap-3 pb-4 py-2 scrollbar-thin scrollbar-thumb-indigo-200 scrollbar-track-slate-50">
                 {animeChar.map((char) => {
                   const japaneseVA = char?.voice_actors?.find(
@@ -247,7 +258,7 @@ const Page = ({ params }) => {
 
           {animePic?.length > 0 && (
             <div>
-              <h4 className="text-xl font-bold mb-4 text-indigo-900 border-b pb-2">
+              <h4 className="text-2xl font-bold mb-4 text-indigo-900 border-b pb-2">
                 Gallery
               </h4>
               <div className="flex overflow-x-auto gap-3 pb-4 scrollbar-thin scrollbar-thumb-indigo-200 scrollbar-track-slate-50">
@@ -268,8 +279,6 @@ const Page = ({ params }) => {
               </div>
             </div>
           )}
-
-          {animeStac && <Statistics statistics={animeStac} />}
 
           {(anime?.trailer?.youtube_id || anime?.trailer?.embed_url) && (
             <div className="flex flex-col gap-4">
