@@ -1,18 +1,51 @@
 import prisma from "../libs/prisma";
 
 const CommentList = async ({ anime_mal_id }) => {
-  //   const comments = await prisma.comment.findyMany({ where: { anime_mal_id } });
-  const comments = await prisma.comment.findMany({ where: { anime_mal_id } });
+  const comments = await prisma.comment.findMany({
+    where: { anime_mal_id },
+    orderBy: { id: "desc" },
+  });
 
-  console.log("isi comment", comments);
+  if (comments.length === 0) {
+    return (
+      <div className="flex flex-col items-center justify-center p-8 bg-slate-50 rounded-xl border border-dashed border-slate-300">
+        <p className="text-slate-500 font-medium">No comments yet.</p>
+        <p className="text-sm text-slate-400">
+          Be the first to share your thoughts!
+        </p>
+      </div>
+    );
+  }
 
   return (
-    <div>
+    <div className="flex flex-col gap-4">
+      <h4 className="text-xl font-bold text-indigo-900 mb-2">
+        Comments ({comments.length})
+      </h4>
       {comments.map((comment) => {
+        const initial = comment.user_name
+          ? comment.user_name[0].toUpperCase()
+          : "?";
         return (
-          <div key={comment.id}>
-            <p>{comment.user_name}</p>
-            <p>{comment.comment}</p>
+          <div
+            key={comment.id}
+            className="flex gap-4 p-4 bg-white rounded-xl border border-slate-100 shadow-sm hover:shadow-md transition-shadow"
+          >
+            <div className="flex-shrink-0 w-10 h-10 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-700 font-bold text-lg border border-indigo-200">
+              {initial}
+            </div>
+            <div className="flex flex-col w-full">
+              <div className="flex justify-between items-baseline mb-1">
+                <p className="font-bold text-indigo-900 text-sm">
+                  {comment.user_name}
+                </p>
+                {/* Placeholder for date if available in schema */}
+                {/* <span className="text-xs text-slate-400">2 days ago</span> */}
+              </div>
+              <p className="text-slate-700 text-sm leading-relaxed whitespace-pre-wrap">
+                {comment.comment}
+              </p>
+            </div>
           </div>
         );
       })}

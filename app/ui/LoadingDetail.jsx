@@ -174,6 +174,28 @@ const LoadingDetail = () => {
               className="rounded-xl"
             />
           </div>
+
+          {/* Comments Section Skeleton */}
+          <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm mt-4">
+            <Skeleton variant="text" width="40%" height={40} className="mb-6" />
+            
+            {/* Input Skeleton */}
+            <Skeleton variant="rectangular" width="100%" height={120} className="rounded-lg mb-8" />
+
+            {/* List Skeleton */}
+            <div className="flex flex-col gap-4">
+               {Array.from(new Array(3)).map((_, i) => (
+                <div key={i} className="flex gap-4">
+                  <Skeleton variant="circular" width={40} height={40} className="shrink-0" />
+                  <div className="flex flex-col w-full gap-2">
+                     <Skeleton variant="text" width="30%" height={20} />
+                     <Skeleton variant="text" width="90%" height={15} />
+                     <Skeleton variant="text" width="60%" height={15} />
+                  </div>
+                </div>
+               ))}
+            </div>
+          </div>
         </div>
       </div>
     </div>

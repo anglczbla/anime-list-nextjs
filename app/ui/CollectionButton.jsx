@@ -1,8 +1,8 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 const CollectionButton = ({
@@ -11,6 +11,7 @@ const CollectionButton = ({
   collection,
   anime_image,
   anime_title,
+  user,
 }) => {
   const router = useRouter();
   const [isCollected, setIsCollected] = useState(!!collection);
@@ -55,14 +56,14 @@ const CollectionButton = ({
       onClick={handleCollection}
       disabled={mutation.isPending}
       className={`px-4 py-2 font-bold rounded-lg transition-all shadow-md disabled:opacity-50 disabled:cursor-not-allowed ${
-        isCollected
+        isCollected && user
           ? "bg-red-600 text-white hover:bg-red-700"
           : "bg-indigo-600 text-white hover:bg-indigo-700"
       }`}
     >
       {mutation.isPending
         ? "Loading..."
-        : isCollected
+        : isCollected && user
         ? "Remove from Collection"
         : "Add to Collection"}
     </button>

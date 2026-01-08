@@ -70,6 +70,7 @@ const AnimeDetail = ({ id, user_email, collection, user, commentList }) => {
           collection={collection}
           anime_image={anime?.images?.webp?.large_image_url}
           anime_title={anime?.title}
+          user={user}
         />
       </div>
 
@@ -352,14 +353,17 @@ const AnimeDetail = ({ id, user_email, collection, user, commentList }) => {
             </div>
           )}
 
-          <div className="px-4 py-2">
+          <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm mt-4">
+            <h3 className="text-2xl font-bold mb-6 text-indigo-900 border-b pb-4">
+              Community Discussion
+            </h3>
             <CommentInput
               anime_mal_id={id}
               user_email={user_email}
               user_name={user?.name}
               anime_title={anime?.title}
             />
-            {commentList}
+            <div className="mt-8">{commentList}</div>
           </div>
         </div>
       </div>

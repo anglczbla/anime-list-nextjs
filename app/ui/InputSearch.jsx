@@ -1,7 +1,7 @@
 "use client";
 
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useAnimeQuery } from "../hooks/useAnimeQuery";
 import Option from "../utils/Option";
 
@@ -11,7 +11,7 @@ const InputSearch = () => {
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const timeoutRef = useRef(null);
-  const [year, setYear] = usestate("");
+  const [year, setYear] = useState("");
 
   const { data: genresList } = useAnimeQuery({ endpoint: "genres/anime" });
   const { data: seasonList } = useAnimeQuery({
