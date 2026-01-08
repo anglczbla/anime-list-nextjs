@@ -2,17 +2,17 @@ import prisma from "../../../libs/prisma";
 
 export async function POST(request) {
   try {
-    const { anime_mal_id, user_email, anime_image, anime_title } =
+    const { anime_mal_id, user_email, comment, user_name, anime_title } =
       await request.json();
 
-    const createCollection = await prisma.collection.create({
-      data: { anime_mal_id, user_email, anime_title, anime_image },
+    const createComment = await prisma.comment.create({
+      data: { anime_mal_id, user_email, comment, user_name, anime_title },
     });
 
     return Response.json({
       status: 200,
       isCreated: true,
-      data: createCollection,
+      data: createComment,
     });
   } catch (error) {
     return Response.json({
@@ -25,24 +25,25 @@ export async function POST(request) {
 
 export async function DELETE(request) {
   try {
-    const { anime_mal_id, user_email } = await request.json();
+    const { anime_mal_id, user_email, comment, user_name, anime_title } =
+      await request.json();
 
-    const deleteCollection = await prisma.collection.deleteMany({
-      where: { anime_mal_id, user_email },
+    const deleteComment = await prisma.comment.deleteMany({
+      where: { anime_mal_id, user_email, comment, user_name, anime_title },
     });
 
-    if (deleteCollection.count === 0) {
+    if (deleteComment.count === 0) {
       return Response.json({
         status: 404,
         isDeleted: false,
-        message: "Collection not found",
+        message: "Comment not found",
       });
     }
 
     return Response.json({
       status: 200,
       isDeleted: true,
-      data: deleteCollection,
+      data: deleteComment,
     });
   } catch (error) {
     return Response.json({

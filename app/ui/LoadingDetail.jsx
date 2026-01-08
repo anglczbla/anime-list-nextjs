@@ -50,6 +50,32 @@ const LoadingDetail = () => {
               <Skeleton variant="rounded" width={50} height={20} />
               <Skeleton variant="rounded" width={50} height={20} />
             </div>
+
+            {/* Staff Skeleton */}
+            <Skeleton
+              variant="text"
+              width="30%"
+              height={25}
+              className="mb-2"
+            />
+            <div className="flex flex-col gap-2 mb-4">
+              {Array.from(new Array(5)).map((_, i) => (
+                <div key={i} className="flex items-center gap-3">
+                  <Skeleton
+                    variant="rectangular"
+                    width={40}
+                    height={40}
+                    className="rounded-md shrink-0"
+                  />
+                  <div className="flex flex-col gap-1 w-full">
+                    <Skeleton variant="text" width="70%" height={15} />
+                    <Skeleton variant="text" width="40%" height={10} />
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Producers Skeleton */}
             <Skeleton
               variant="text"
               width="40%"

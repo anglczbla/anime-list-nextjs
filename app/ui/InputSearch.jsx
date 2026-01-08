@@ -11,8 +11,12 @@ const InputSearch = () => {
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const timeoutRef = useRef(null);
+  const [year, setYear] = usestate("");
 
   const { data: genresList } = useAnimeQuery({ endpoint: "genres/anime" });
+  const { data: seasonList } = useAnimeQuery({
+    endpoint: `genres/${year}/seasons`,
+  });
 
   useEffect(() => {
     return () => {
@@ -28,8 +32,14 @@ const InputSearch = () => {
     }
   }, [searchParams]);
 
-  const updateURL = (keyword, category) => {
-    const filterablePages = ["/top", "/popular", "/recommendation", "/search"];
+  const updateURL = (keyword, category, seasons) => {
+    const filterablePages = [
+      "/top",
+      "/popular",
+      "/recommendation",
+      "/search",
+      "/season",
+    ];
     const isFilterMode = filterablePages.includes(pathname);
 
     if (isFilterMode) {
@@ -53,8 +63,9 @@ const InputSearch = () => {
       const params = new URLSearchParams();
       if (keyword) params.set("q", keyword);
       if (category) params.set("category", category);
+      if (seasons) params.set("seasons", seasons);
 
-      if (!keyword && !category) {
+      if (!keyword && !category && !seasons) {
         router.push("/");
       } else {
         router.push(`/search?${params.toString()}`);
