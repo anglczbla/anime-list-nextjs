@@ -25,9 +25,18 @@ const Page = async () => {
                   <h4 className="text-lg font-bold text-indigo-900 group-hover:text-indigo-600 transition-colors">
                     {comment.anime_title}
                   </h4>
+                  <span className="text-xs text-slate-400 bg-slate-100 px-2 py-1 rounded-md">
+                    {new Date(comment.createdAt).toLocaleString("id-ID", {
+                      day: "2-digit",
+                      month: "long",
+                      year: "numeric",
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    })}
+                  </span>
                 </div>
                 <div className="p-3 bg-slate-50 rounded-lg italic text-slate-700 border-l-4 border-indigo-400">
-                  <p className="text-sm">"{comment.comment}"</p>
+                  <p className="text-sm">&quot;{comment.comment}&quot;</p>
                 </div>
               </div>
             </Link>
@@ -49,7 +58,7 @@ const Page = async () => {
               />
             </svg>
             <h3 className="text-xl font-semibold mb-2">
-              You haven't posted any comments yet
+              You haven&apos;t posted any comments yet
             </h3>
             <p className="mb-6">Share your thoughts on your favorite anime!</p>
             <Link

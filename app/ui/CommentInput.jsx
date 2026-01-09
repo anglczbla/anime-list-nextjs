@@ -76,9 +76,6 @@ const CommentInput = ({ anime_mal_id, user_email, user_name, anime_title }) => {
           className="w-full h-32 p-4 text-slate-700 bg-slate-50 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all resize-y min-h-[100px]"
           disabled={!user_email || mutation.isPending}
         />
-        <div className="absolute bottom-3 right-3 text-xs text-slate-400">
-          {comment.length} chars
-        </div>
       </div>
       <div className="flex justify-end">
         <button

@@ -39,8 +39,15 @@ const CommentList = async ({ anime_mal_id }) => {
                 <p className="font-bold text-indigo-900 text-sm">
                   {comment.user_name}
                 </p>
-                {/* Placeholder for date if available in schema */}
-                {/* <span className="text-xs text-slate-400">2 days ago</span> */}
+                <span className="text-xs text-slate-400">
+                  {new Date(comment.createdAt).toLocaleDateString("id-ID", {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  })}
+                </span>
               </div>
               <p className="text-slate-700 text-sm leading-relaxed whitespace-pre-wrap">
                 {comment.comment}
