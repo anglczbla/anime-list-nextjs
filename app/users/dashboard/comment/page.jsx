@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { authUserSession } from "../../../libs/auth";
 import prisma from "../../../libs/prisma";
+import DeleteComment from "../../../ui/DeleteComment";
 import HeaderDashboard from "../../../ui/HeaderDashboard";
 
 const Page = async () => {
@@ -15,31 +16,40 @@ const Page = async () => {
       <div className="grid grid-cols-1 gap-4 mt-6">
         {comments.length > 0 ? (
           comments.map((comment) => (
-            <Link
+            <div
               key={comment.id}
-              href={`/anime/${comment.anime_mal_id}`}
-              className="group bg-white p-6 rounded-xl border border-slate-200 shadow-sm hover:shadow-md hover:border-indigo-300 transition-all duration-300"
+              className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition-all duration-300"
             >
               <div className="flex flex-col gap-2">
                 <div className="flex justify-between items-start">
-                  <h4 className="text-lg font-bold text-indigo-900 group-hover:text-indigo-600 transition-colors">
-                    {comment.anime_title}
-                  </h4>
-                  <span className="text-xs text-slate-400 bg-slate-100 px-2 py-1 rounded-md">
-                    {new Date(comment.createdAt).toLocaleString("id-ID", {
-                      day: "2-digit",
-                      month: "long",
-                      year: "numeric",
-                      hour: "2-digit",
-                      minute: "2-digit",
-                    })}
-                  </span>
+                  <Link
+                    href={`/anime/${comment.anime_mal_id}`}
+                    className="group"
+                  >
+                    <h4 className="text-lg font-bold text-indigo-900 group-hover:text-indigo-600 transition-colors">
+                      {comment.anime_title}
+                    </h4>
+                  </Link>
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs text-slate-400 bg-slate-100 px-2 py-1 rounded-md">
+                      {new Date(comment.createdAt).toLocaleString("id-ID", {
+                        day: "2-digit",
+                        month: "long",
+                        year: "numeric",
+                        hour: "2-digit",
+                        minute: "2-digit",
+                      })}
+                    </span>
+                    <DeleteComment id={comment.id} />
+                  </div>
                 </div>
-                <div className="p-3 bg-slate-50 rounded-lg italic text-slate-700 border-l-4 border-indigo-400">
-                  <p className="text-sm">&quot;{comment.comment}&quot;</p>
-                </div>
+                <Link href={`/anime/${comment.anime_mal_id}`}>
+                  <div className="p-3 bg-slate-50 rounded-lg italic text-slate-700 border-l-4 border-indigo-400 hover:bg-slate-100 transition-colors">
+                    <p className="text-sm">&quot;{comment.comment}&quot;</p>
+                  </div>
+                </Link>
               </div>
-            </Link>
+            </div>
           ))
         ) : (
           <div className="col-span-full flex flex-col items-center justify-center py-20 bg-slate-50 rounded-xl border-2 border-dashed border-slate-300 text-slate-500">

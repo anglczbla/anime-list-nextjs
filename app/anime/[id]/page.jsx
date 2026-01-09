@@ -16,7 +16,7 @@ const Page = async ({ params }) => {
       user_email={user?.email}
       collection={collection}
       user={user}
-      commentList={<CommentList anime_mal_id={id} />}
+      commentList={<CommentList anime_mal_id={id} user_email={user?.email} />}
     />
   );
 };

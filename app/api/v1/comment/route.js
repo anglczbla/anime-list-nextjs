@@ -1,3 +1,4 @@
+import { authUserSession } from "../../../libs/auth";
 import prisma from "../../../libs/prisma";
 
 export async function POST(request) {
@@ -25,20 +26,40 @@ export async function POST(request) {
 
 export async function DELETE(request) {
   try {
-    const { anime_mal_id, user_email, comment, user_name, anime_title } =
-      await request.json();
+    const { id } = await request.json();
+    const user = await authUserSession();
 
-    const deleteComment = await prisma.comment.deleteMany({
-      where: { anime_mal_id, user_email, comment, user_name, anime_title },
+    if (!user) {
+      return Response.json({
+        status: 401,
+        isDeleted: false,
+        error: "Unauthorized",
+      });
+    }
+
+    const comment = await prisma.comment.findUnique({
+      where: { id: Number(id) },
     });
 
-    if (deleteComment.count === 0) {
+    if (!comment) {
       return Response.json({
         status: 404,
         isDeleted: false,
-        message: "Comment not found",
+        error: "Comment not found",
       });
     }
+
+    if (comment.user_email !== user.email) {
+      return Response.json({
+        status: 403,
+        isDeleted: false,
+        error: "Forbidden: You are not the owner of this comment",
+      });
+    }
+
+    const deleteComment = await prisma.comment.delete({
+      where: { id: Number(id) },
+    });
 
     return Response.json({
       status: 200,

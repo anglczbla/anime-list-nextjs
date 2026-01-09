@@ -1,6 +1,7 @@
 import prisma from "../libs/prisma";
+import DeleteComment from "./DeleteComment";
 
-const CommentList = async ({ anime_mal_id }) => {
+const CommentList = async ({ anime_mal_id, user_email }) => {
   const comments = await prisma.comment.findMany({
     where: { anime_mal_id },
     orderBy: { id: "desc" },
@@ -39,15 +40,20 @@ const CommentList = async ({ anime_mal_id }) => {
                 <p className="font-bold text-indigo-900 text-sm">
                   {comment.user_name}
                 </p>
-                <span className="text-xs text-slate-400">
-                  {new Date(comment.createdAt).toLocaleDateString("id-ID", {
-                    year: "numeric",
-                    month: "long",
-                    day: "numeric",
-                    hour: "2-digit",
-                    minute: "2-digit",
-                  })}
-                </span>
+                <div className="flex items-center gap-2">
+                  <span className="text-xs text-slate-400">
+                    {new Date(comment.createdAt).toLocaleDateString("id-ID", {
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    })}
+                  </span>
+                  {user_email === comment.user_email && (
+                    <DeleteComment id={comment.id} />
+                  )}
+                </div>
               </div>
               <p className="text-slate-700 text-sm leading-relaxed whitespace-pre-wrap">
                 {comment.comment}
