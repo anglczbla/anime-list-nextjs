@@ -25,7 +25,7 @@ const SearchContent = () => {
     setPage,
   } = useAnimeQuery({
     endpoint: "anime",
-    initialLimit: 10,
+    initialLimit: 12,
     searchQuery: keyword,
     genres: category,
     enabled: !!keyword || !!category,
