@@ -55,10 +55,10 @@ const CollectionButton = ({
     <button
       onClick={handleCollection}
       disabled={mutation.isPending}
-      className={`px-4 py-2 font-bold rounded-lg transition-all shadow-md disabled:opacity-50 disabled:cursor-not-allowed ${
+      className={`px-4 py-2 font-bold rounded-lg transition-all shadow-md dark:shadow-slate-900/50 disabled:opacity-50 disabled:cursor-not-allowed ${
         isCollected && user
-          ? "bg-red-600 text-white hover:bg-red-700"
-          : "bg-indigo-600 text-white hover:bg-indigo-700"
+          ? "bg-red-600 text-white hover:bg-red-700 dark:hover:bg-red-500"
+          : "bg-indigo-600 text-white hover:bg-indigo-700 dark:hover:bg-indigo-500"
       }`}
     >
       {mutation.isPending

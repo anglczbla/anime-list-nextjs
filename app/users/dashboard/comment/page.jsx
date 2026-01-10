@@ -18,7 +18,7 @@ const Page = async () => {
           comments.map((comment) => (
             <div
               key={comment.id}
-              className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition-all duration-300"
+              className="bg-white dark:bg-slate-800 p-6 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm hover:shadow-md transition-all duration-300"
             >
               <div className="flex flex-col gap-2">
                 <div className="flex justify-between items-start">
@@ -26,12 +26,12 @@ const Page = async () => {
                     href={`/anime/${comment.anime_mal_id}`}
                     className="group"
                   >
-                    <h4 className="text-lg font-bold text-indigo-900 group-hover:text-indigo-600 transition-colors">
+                    <h4 className="text-lg font-bold text-indigo-900 dark:text-indigo-300 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
                       {comment.anime_title}
                     </h4>
                   </Link>
                   <div className="flex items-center gap-2">
-                    <span className="text-xs text-slate-400 bg-slate-100 px-2 py-1 rounded-md">
+                    <span className="text-xs text-slate-400 dark:text-slate-300 bg-slate-100 dark:bg-slate-700 px-2 py-1 rounded-md">
                       {new Date(comment.createdAt).toLocaleString("id-ID", {
                         day: "2-digit",
                         month: "long",
@@ -44,7 +44,7 @@ const Page = async () => {
                   </div>
                 </div>
                 <Link href={`/anime/${comment.anime_mal_id}`}>
-                  <div className="p-3 bg-slate-50 rounded-lg italic text-slate-700 border-l-4 border-indigo-400 hover:bg-slate-100 transition-colors">
+                  <div className="p-3 bg-slate-50 dark:bg-slate-900 rounded-lg italic text-slate-700 dark:text-slate-300 border-l-4 border-indigo-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
                     <p className="text-sm">&quot;{comment.comment}&quot;</p>
                   </div>
                 </Link>
@@ -52,10 +52,10 @@ const Page = async () => {
             </div>
           ))
         ) : (
-          <div className="col-span-full flex flex-col items-center justify-center py-20 bg-slate-50 rounded-xl border-2 border-dashed border-slate-300 text-slate-500">
+          <div className="col-span-full flex flex-col items-center justify-center py-20 bg-slate-50 dark:bg-slate-900 rounded-xl border-2 border-dashed border-slate-300 dark:border-slate-700 text-slate-500 dark:text-slate-400">
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="h-16 w-16 mb-4 text-slate-300"
+              className="h-16 w-16 mb-4 text-slate-300 dark:text-slate-600"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -73,7 +73,7 @@ const Page = async () => {
             <p className="mb-6">Share your thoughts on your favorite anime!</p>
             <Link
               href="/"
-              className="px-6 py-2 bg-amber-500 text-white rounded-full font-medium hover:bg-amber-600 transition-colors shadow-lg shadow-amber-100"
+              className="px-6 py-2 bg-amber-500 text-white rounded-full font-medium hover:bg-amber-600 transition-colors shadow-lg shadow-amber-100 dark:shadow-amber-900/50"
             >
               Start Commenting
             </Link>

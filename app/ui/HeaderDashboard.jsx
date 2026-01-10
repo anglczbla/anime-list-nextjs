@@ -10,10 +10,10 @@ const HeaderDashboard = ({ title }) => {
   };
   return (
     <div className="flex justify-between items-center mb-4">
-      <button onClick={handleBack} className="text-color-dark">
+      <button onClick={handleBack} className="text-slate-800 dark:text-slate-200 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
         <ArrowBigLeft size={32} />
       </button>
-      <h3 className="text-2xl text-color-dark font-bold">{title}</h3>
+      <h3 className="text-2xl text-slate-800 dark:text-slate-200 font-bold">{title}</h3>
     </div>
   );
 };

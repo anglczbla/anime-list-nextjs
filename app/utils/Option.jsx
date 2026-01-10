@@ -1,6 +1,6 @@
 const Option = ({ genre }) => {
   return (
-    <option value={genre?.mal_id} className="text-slate-800">
+    <option value={genre?.mal_id}>
       {genre?.name} {genre?.count ? `(${genre?.count})` : ""}
     </option>
   );

@@ -11,7 +11,7 @@ export default function Page() {
     data: topAnime,
   } = useAnimeQuery({
     endpoint: "top/anime",
-    initialLimit: 8,
+    initialLimit: 12,
   });
 
   const {
@@ -20,7 +20,7 @@ export default function Page() {
     data: recommendation,
   } = useAnimeQuery({
     endpoint: "recommendations/anime",
-    initialLimit: 8,
+    initialLimit: 12,
   });
 
   const {
@@ -29,10 +29,10 @@ export default function Page() {
     data: popularAnime,
   } = useAnimeQuery({
     endpoint: "watch/promos/popular",
-    initialLimit: 8,
+    initialLimit: 12,
   });
 
-  const displayPopular = popularAnime?.map((item) => item.entry).slice(0, 8);
+  const displayPopular = popularAnime?.map((item) => item.entry).slice(0, 12);
 
   const recommendAnime = recommendation
     ?.flatMap((r) => r.entry)
@@ -40,7 +40,7 @@ export default function Page() {
       (anime, index, self) =>
         index === self.findIndex((t) => t.mal_id === anime.mal_id)
     )
-    .slice(0, 8);
+    .slice(0, 12);
 
   if (error || erroRecs || errorPop) return <div>Error:{error.message} </div>;
 

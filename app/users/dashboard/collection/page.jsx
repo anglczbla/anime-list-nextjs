@@ -2,7 +2,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { authUserSession } from "../../../libs/auth";
 import prisma from "../../../libs/prisma";
-import Header from "../../../ui/Header";
 import HeaderDashboard from "../../../ui/HeaderDashboard";
 
 const Page = async () => {
@@ -20,7 +19,7 @@ const Page = async () => {
             <Link
               key={c.anime_mal_id || i}
               href={`/anime/${c.anime_mal_id}`}
-              className="relative group overflow-hidden rounded-xl shadow-md border border-slate-200 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
+              className="relative group overflow-hidden rounded-xl shadow-md border border-slate-200 dark:border-slate-700 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
             >
               <div className="relative aspect-[3/4] w-full overflow-hidden">
                 <Image
@@ -43,10 +42,10 @@ const Page = async () => {
             </Link>
           ))
         ) : (
-          <div className="col-span-full flex flex-col items-center justify-center py-20 bg-slate-50 rounded-xl border-2 border-dashed border-slate-300 text-slate-500">
+          <div className="col-span-full flex flex-col items-center justify-center py-20 bg-slate-50 dark:bg-slate-900 rounded-xl border-2 border-dashed border-slate-300 dark:border-slate-700 text-slate-500 dark:text-slate-400">
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="h-16 w-16 mb-4 text-slate-300"
+              className="h-16 w-16 mb-4 text-slate-300 dark:text-slate-600"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -66,7 +65,7 @@ const Page = async () => {
             </p>
             <Link
               href="/"
-              className="px-6 py-2 bg-indigo-600 text-white rounded-full font-medium hover:bg-indigo-700 transition-colors shadow-lg shadow-indigo-200"
+              className="px-6 py-2 bg-indigo-600 text-white rounded-full font-medium hover:bg-indigo-700 transition-colors shadow-lg shadow-indigo-200 dark:shadow-indigo-900/50"
             >
               Browse Anime
             </Link>

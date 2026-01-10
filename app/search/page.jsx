@@ -1,12 +1,13 @@
 "use client";
 import { useSearchParams } from "next/navigation";
+import { Suspense } from "react";
 import AnimeList from "../_components/AnimeList";
 import { useAnimeQuery } from "../hooks/useAnimeQuery";
 import Header from "../ui/Header";
 import Loading from "../ui/Loading";
 import Pagination from "../utils/Pagination";
 
-export default function SearchPage() {
+const SearchContent = () => {
   const searchParams = useSearchParams();
   const keyword = searchParams.get("q") || "";
   const category = searchParams.get("category") || "";
@@ -38,7 +39,9 @@ export default function SearchPage() {
 
   let headerTitle = "Search Page";
   if (keyword && category) {
-    headerTitle = `Search for "${keyword}" in Genre ${selectedGenre?.name || ""}`;
+    headerTitle = `Search for "${keyword}" in Genre ${
+      selectedGenre?.name || ""
+    }`;
   } else if (keyword) {
     headerTitle = `Search for "${keyword}"`;
   } else if (category) {
@@ -67,5 +70,13 @@ export default function SearchPage() {
         )}
       </section>
     </div>
+  );
+};
+
+export default function SearchPage() {
+  return (
+    <Suspense fallback={<Loading />}>
+      <SearchContent />
+    </Suspense>
   );
 }

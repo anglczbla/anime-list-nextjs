@@ -38,7 +38,7 @@ const DeleteComment = ({ id }) => {
     <button
       onClick={handleDelete}
       disabled={mutation.isPending}
-      className="text-slate-400 hover:text-red-500 transition-colors p-2 rounded-full hover:bg-red-50"
+      className="text-slate-500 dark:text-slate-400 hover:text-red-500 transition-colors p-2 rounded-full hover:bg-red-50 dark:hover:bg-red-900/30"
       title="Delete Comment"
     >
       {mutation.isPending ? (

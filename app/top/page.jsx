@@ -1,12 +1,13 @@
 "use client";
 import { useSearchParams } from "next/navigation";
+import { Suspense } from "react";
 import AnimeList from "../_components/AnimeList";
 import { useAnimeQuery } from "../hooks/useAnimeQuery";
 import Loading from "../ui/Loading";
 import HeaderMenu from "../utils/HeaderMenu";
 import Pagination from "../utils/Pagination";
 
-export default function TopPage() {
+const TopContent = () => {
   const searchParams = useSearchParams();
   const keyword = searchParams.get("q") || "";
   const category = searchParams.get("category") || "";
@@ -53,5 +54,13 @@ export default function TopPage() {
         )}
       </div>
     </div>
+  );
+};
+
+export default function TopPage() {
+  return (
+    <Suspense fallback={<Loading />}>
+      <TopContent />
+    </Suspense>
   );
 }

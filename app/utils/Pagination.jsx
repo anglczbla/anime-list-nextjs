@@ -19,7 +19,7 @@ const Pagination = ({ page, lastPage, setPage }) => {
   if (lastPage <= 1) return null;
 
   return (
-    <div className="flex justify-center items-center py-4 px-2 gap-4 text-slate-800 text-lg font-medium">
+    <div className="flex justify-center items-center py-4 px-2 gap-4 text-slate-800 dark:text-slate-200 text-lg font-medium">
       {page > 1 && (
         <button
           onClick={handlePrevPage}

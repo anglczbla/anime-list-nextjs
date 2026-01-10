@@ -12,7 +12,7 @@ const poppins = Poppins({
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="id">
+    <html lang="id" suppressHydrationWarning>
       <body className={poppins.className}>
         <Providers>
           <Navbar />

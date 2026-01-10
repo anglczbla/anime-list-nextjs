@@ -58,7 +58,11 @@ const InputSearch = () => {
         params.delete("category");
       }
 
-      router.push(`${pathname}?${params.toString()}`);
+      if (pathname === "/search" && !keyword && !category) {
+        router.push("/");
+      } else {
+        router.push(`${pathname}?${params.toString()}`);
+      }
     } else {
       const params = new URLSearchParams();
       if (keyword) params.set("q", keyword);
@@ -100,7 +104,7 @@ const InputSearch = () => {
   return (
     <div className="relative flex md:flex-row flex-col gap-2">
       <select
-        className="p-2 rounded cursor-pointer text-slate-800"
+        className="p-2 rounded cursor-pointer bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
         onChange={handleSelect}
         value={searchParams.get("category") || ""}
       >
@@ -112,7 +116,7 @@ const InputSearch = () => {
       <input
         type="text"
         placeholder="Search Anime"
-        className="w-full p-2 rounded text-slate-800"
+        className="w-full p-2 rounded bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 placeholder-slate-400 dark:placeholder-slate-500"
         ref={searchRef}
         onChange={handleInput}
         defaultValue={searchParams.get("q") || ""}

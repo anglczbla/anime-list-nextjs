@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { authUserSession } from "../libs/auth";
 import InputSearch from "./InputSearch";
+import ThemeToggle from "./ThemeToggle";
 import UserActionButton from "./UserActionButton";
 
 const Navbar = async () => {
@@ -11,7 +12,7 @@ const Navbar = async () => {
         <div className="flex flex-col md:flex-row justify-between items-center gap-4">
           <Link
             href="/"
-            className="font-extrabold text-2xl tracking-tighter text-indigo-600 hover:text-indigo-500 transition-colors"
+            className="font-extrabold text-2xl tracking-tighter text-indigo-600 dark:text-indigo-400 hover:text-indigo-500 dark:hover:text-indigo-300 transition-colors"
           >
             AnimeList<span className="text-violet-500">.</span>
           </Link>
@@ -20,13 +21,16 @@ const Navbar = async () => {
              {user && (
               <Link 
                 href="/users/dashboard" 
-                className="text-sm font-semibold text-slate-600 hover:text-indigo-600 transition-colors"
+                className="text-sm font-semibold text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"
               >
                 Dashboard
               </Link>
             )}
             <InputSearch />
-            <UserActionButton />
+            <div className="flex items-center gap-3">
+              <ThemeToggle />
+              <UserActionButton />
+            </div>
           </div>
         </div>
       </div>

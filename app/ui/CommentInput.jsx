@@ -53,14 +53,14 @@ const CommentInput = ({ anime_mal_id, user_email, user_name, anime_title }) => {
   };
 
   return (
-    <div className="flex flex-col gap-4 bg-white p-6 rounded-xl border border-slate-200 shadow-sm mb-6">
+    <div className="flex flex-col gap-4 bg-white dark:bg-slate-800 p-6 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm mb-6">
       <div className="flex justify-between items-center">
-        <label className="text-lg font-bold text-indigo-900">
+        <label className="text-lg font-bold text-indigo-900 dark:text-indigo-300">
           Leave a Comment
         </label>
         {user_name && (
-          <span className="text-xs text-slate-500 font-medium">
-            Posting as <span className="text-indigo-600">{user_name}</span>
+          <span className="text-xs text-slate-500 dark:text-slate-400 font-medium">
+            Posting as <span className="text-indigo-600 dark:text-indigo-400">{user_name}</span>
           </span>
         )}
       </div>
@@ -73,7 +73,7 @@ const CommentInput = ({ anime_mal_id, user_email, user_name, anime_title }) => {
               ? "Share your thoughts on this anime..."
               : "Please login to join the discussion."
           }
-          className="w-full h-32 p-4 text-slate-700 bg-slate-50 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all resize-y min-h-[100px]"
+          className="w-full h-32 p-4 text-slate-700 dark:text-slate-200 bg-slate-50 dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all resize-y min-h-[100px] placeholder:text-slate-400 dark:placeholder:text-slate-500"
           disabled={!user_email || mutation.isPending}
         />
       </div>
@@ -84,8 +84,8 @@ const CommentInput = ({ anime_mal_id, user_email, user_name, anime_title }) => {
           className={`px-6 py-2.5 rounded-lg font-semibold transition-all shadow-sm flex items-center gap-2
             ${
               mutation.isPending || !comment.trim() || !user_email
-                ? "bg-slate-300 text-slate-500 cursor-not-allowed"
-                : "bg-indigo-600 text-white hover:bg-indigo-700 hover:shadow-md active:scale-95"
+                ? "bg-slate-300 dark:bg-slate-700 text-slate-500 dark:text-slate-400 cursor-not-allowed"
+                : "bg-indigo-600 text-white hover:bg-indigo-700 dark:hover:bg-indigo-500 hover:shadow-md active:scale-95"
             }`}
         >
           {mutation.isPending ? (
