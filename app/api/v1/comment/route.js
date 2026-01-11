@@ -3,11 +3,11 @@ import prisma from "../../../libs/prisma";
 
 export async function POST(request) {
   try {
-    const { anime_mal_id, user_email, comment, user_name, anime_title } =
+    const { anime_mal_id, user_email, comment, anime_title } =
       await request.json();
 
     const createComment = await prisma.comment.create({
-      data: { anime_mal_id, user_email, comment, user_name, anime_title },
+      data: { anime_mal_id, user_email, comment, anime_title },
     });
 
     return Response.json({

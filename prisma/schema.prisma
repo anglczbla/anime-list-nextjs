@@ -1,10 +1,3 @@
-
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
   output   = "../generated/prisma"
@@ -15,24 +8,39 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Collection{
-  id                  Int @id @default(autoincrement())
-  anime_mal_id        String
-  user_email          String
-  anime_image         String?
-  anime_title         String?
+model User {
+  id          Int          @id @default(autoincrement())
+  name    String
+  email       String       @unique 
+  photo       String
+  
+ 
+  collections Collection[]
+  comments    Comment[]
+}
+
+model Collection {
+  id             Int     @id @default(autoincrement())
+  anime_mal_id   String
+  anime_image    String?
+  anime_title    String?
+
+  // foreign Key
+  user_email     String
+  user           User    @relation(fields: [user_email], references: [email], onDelete: Cascade)
 
   @@unique([user_email, anime_mal_id])
 }
 
-model Comment{
-  id                  Int @id @default(autoincrement())
-  anime_mal_id        String
-  user_email          String
-  comment             String
-  user_name           String
-  anime_title         String?
-  createdAt           DateTime @default(now())
+model Comment {
+  id             Int      @id @default(autoincrement())
+  anime_mal_id   String
+  comment        String
+  anime_title    String?
+  createdAt      DateTime @default(now())
+
+  // foreign Key
+  user_email     String
+  user           User     @relation(fields: [user_email], references: [email], onDelete: Cascade)
+
 }
-
-
