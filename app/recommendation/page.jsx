@@ -5,7 +5,6 @@ import AnimeList from "../_components/AnimeList";
 import { useAnimeQuery } from "../hooks/useAnimeQuery";
 import Loading from "../ui/Loading";
 import HeaderMenu from "../utils/HeaderMenu";
-import Pagination from "../utils/Pagination";
 
 const RecommendationContent = () => {
   const searchParams = useSearchParams();
@@ -50,12 +49,6 @@ const RecommendationContent = () => {
         ) : recommendAnime?.length > 0 ? (
           <>
             <AnimeList api={recommendAnime} />
-            <Pagination
-              page={page}
-              lastPage={pagination?.last_visible_page}
-              hasNextPage={hasNextPage}
-              setPage={setPage}
-            />
           </>
         ) : (
           <div className="text-center py-10">
