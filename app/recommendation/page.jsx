@@ -21,19 +21,19 @@ const RecommendationContent = () => {
     page,
   } = useAnimeQuery({
     endpoint: "recommendations/anime",
-    initialLimit: 10,
+    initialLimit: 12,
   });
 
   const recommendAnime = recAnime
     ?.flatMap((r) => r.entry)
     .filter(
       (anime, index, self) =>
-        index === self.findIndex((t) => t.mal_id === anime.mal_id)
+        index === self.findIndex((t) => t.mal_id === anime.mal_id),
     )
     .filter((anime) => {
       const matchTitle = anime.title.toLowerCase().includes(keyword);
       const matchGenre = category
-        ? anime.genres?.some((g) => g.mal_id.toString() === category) ?? false
+        ? (anime.genres?.some((g) => g.mal_id.toString() === category) ?? false)
         : true;
       return matchTitle && matchGenre;
     });

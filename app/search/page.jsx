@@ -28,16 +28,15 @@ const SearchContent = () => {
     initialLimit: 12,
     searchQuery: keyword,
     genres: category,
-    enabled: !!keyword || !!category,
   });
 
   const lastPage = pagination?.last_visible_page;
 
   const selectedGenre = genresList?.find(
-    (g) => g.mal_id.toString() === category
+    (g) => g.mal_id.toString() === category,
   );
 
-  let headerTitle = "Search Page";
+  let headerTitle = "Explore Anime";
   if (keyword && category) {
     headerTitle = `Search for "${keyword}" in Genre ${
       selectedGenre?.name || ""
