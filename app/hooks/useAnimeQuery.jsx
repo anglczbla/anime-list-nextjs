@@ -1,7 +1,7 @@
 "use client";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export const useAnimeQuery = ({
   endpoint = "",
@@ -15,6 +15,10 @@ export const useAnimeQuery = ({
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(initialLimit);
 
+  useEffect(() => {
+    setPage(1);
+  }, [searchQuery, genres, seasons, year]);
+
   const { isPending, error, data, isPlaceholderData } = useQuery({
     queryKey: [
       "anime",
@@ -27,22 +31,24 @@ export const useAnimeQuery = ({
       year,
     ],
     queryFn: async () => {
-      let url = `${process.env.NEXT_PUBLIC_API_BASE_URL}/${endpoint}?limit=${limit}&page=${page}`;
+      const params = {
+        limit,
+        page,
+      };
 
       if (searchQuery) {
-        url += `&q=${searchQuery}`;
+        params.q = searchQuery;
+        if (endpoint === "anime") {
+          params.order_by = "popularity";
+          params.sort = "asc";
+        }
       }
-      if (genres) {
-        url += `&genres=${genres}`;
-      }
-      if (seasons) {
-        url += `&seasons=${seasons}`;
-      }
-      if (year) {
-        url += `&year=${year}`;
-      }
+      if (genres) params.genres = genres;
+      if (seasons) params.seasons = seasons;
+      if (year) params.year = year;
 
-      const response = await axios.get(url);
+      const url = `${process.env.NEXT_PUBLIC_API_BASE_URL}/${endpoint}`;
+      const response = await axios.get(url, { params });
       return response.data;
     },
     placeholderData: keepPreviousData,
