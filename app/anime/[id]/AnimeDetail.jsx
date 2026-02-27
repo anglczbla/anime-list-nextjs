@@ -16,44 +16,31 @@ const AnimeDetail = ({ id, user_email, collection, user, commentList }) => {
     endpoint: `anime/${id}`,
   });
 
-  const {
-    isPending: pendingChar,
-    error: errorChar,
-    data: animeChar,
-  } = useAnimeQuery({
+  const { isPending: pendingChar, data: animeChar } = useAnimeQuery({
     endpoint: `anime/${id}/characters`,
+    enabled: !!anime,
   });
 
-  const {
-    isPending: pendingPic,
-    error: errorPic,
-    data: animePic,
-  } = useAnimeQuery({
+  const { isPending: pendingPic, data: animePic } = useAnimeQuery({
     endpoint: `anime/${id}/pictures`,
+    enabled: !!anime,
   });
 
-  const {
-    isPending: pendingStac,
-    error: errorStac,
-    data: animeStac,
-  } = useAnimeQuery({
+  const { isPending: pendingStac, data: animeStac } = useAnimeQuery({
     endpoint: `anime/${id}/statistics`,
+    enabled: !!anime,
   });
 
-  const {
-    isPending: pendingStaff,
-    error: errorStaff,
-    data: animeStaff,
-  } = useAnimeQuery({
+  const { isPending: pendingStaff, data: animeStaff } = useAnimeQuery({
     endpoint: `anime/${id}/staff`,
+    enabled: !!anime,
   });
 
-  if (isPending || pendingChar || pendingPic || pendingStac || pendingStaff)
-    return <Loading />;
-  if (error || errorChar || errorPic || errorStac || errorStaff)
+  if (isPending) return <Loading />;
+  if (error)
     return (
       <div className="p-4 text-center text-red-500">
-        Error: {error?.message || errorStaff?.message}
+        Error: {error?.message}
       </div>
     );
 
@@ -97,25 +84,33 @@ const AnimeDetail = ({ id, user_email, collection, user, commentList }) => {
               <h4 className="font-bold text-gray-500 dark:text-gray-400 text-xs uppercase">
                 Rank
               </h4>
-              <p className="text-md font-semibold dark:text-slate-200">{anime?.rank || "-"}</p>
+              <p className="text-md font-semibold dark:text-slate-200">
+                {anime?.rank || "-"}
+              </p>
             </div>
             <div className="flex flex-col justify-center items-center rounded-lg border border-slate-200 dark:border-slate-700 p-2 bg-white dark:bg-slate-800 shadow-sm">
               <h4 className="font-bold text-gray-500 dark:text-gray-400 text-xs uppercase">
                 Score
               </h4>
-              <p className="text-md font-semibold dark:text-slate-200">{anime?.score || "-"}</p>
+              <p className="text-md font-semibold dark:text-slate-200">
+                {anime?.score || "-"}
+              </p>
             </div>
             <div className="flex flex-col justify-center items-center rounded-lg border border-slate-200 dark:border-slate-700 p-2 bg-white dark:bg-slate-800 shadow-sm">
               <h4 className="font-bold text-gray-500 dark:text-gray-400 text-xs uppercase">
                 Episodes
               </h4>
-              <p className="text-md font-semibold dark:text-slate-200">{anime?.episodes || "-"}</p>
+              <p className="text-md font-semibold dark:text-slate-200">
+                {anime?.episodes || "-"}
+              </p>
             </div>
             <div className="flex flex-col justify-center items-center rounded-lg border border-slate-200 dark:border-slate-700 p-2 bg-white dark:bg-slate-800 shadow-sm">
               <h4 className="font-bold text-gray-500 dark:text-gray-400 text-xs uppercase">
                 Type
               </h4>
-              <p className="text-md font-semibold dark:text-slate-200">{anime?.type || "-"}</p>
+              <p className="text-md font-semibold dark:text-slate-200">
+                {anime?.type || "-"}
+              </p>
             </div>
             <div className="flex flex-col justify-center items-center rounded-lg border border-slate-200 dark:border-slate-700 p-2 bg-white dark:bg-slate-800 shadow-sm">
               <h4 className="font-bold text-gray-500 dark:text-gray-400 text-xs uppercase">
@@ -129,14 +124,18 @@ const AnimeDetail = ({ id, user_email, collection, user, commentList }) => {
               <h4 className="font-bold text-gray-500 dark:text-gray-400 text-xs uppercase">
                 Status
               </h4>
-              <p className="text-md font-semibold dark:text-slate-200">{anime?.status || "-"}</p>
+              <p className="text-md font-semibold dark:text-slate-200">
+                {anime?.status || "-"}
+              </p>
             </div>
           </div>
 
           <div className="flex flex-col gap-3 bg-slate-50 dark:bg-slate-900 p-3 rounded-lg border border-slate-200 dark:border-slate-700">
             {anime?.genres?.length > 0 && (
               <div>
-                <h4 className="font-bold mb-2 border-b border-slate-200 dark:border-slate-700 pb-1 text-sm dark:text-slate-300">Genres</h4>
+                <h4 className="font-bold mb-2 border-b border-slate-200 dark:border-slate-700 pb-1 text-sm dark:text-slate-300">
+                  Genres
+                </h4>
                 <div className="flex flex-wrap gap-2">
                   {anime.genres.map((g) => (
                     <span
@@ -150,39 +149,47 @@ const AnimeDetail = ({ id, user_email, collection, user, commentList }) => {
               </div>
             )}
 
-            {animeStaff?.length > 0 && (
-              <div>
-                <h4 className="font-bold mb-2 border-b border-slate-200 dark:border-slate-700 pb-1 text-sm dark:text-slate-300">Staff</h4>
-                <div className="flex flex-col gap-2">
-                  {animeStaff.slice(0, 5).map((staff) => (
-                    <div
-                      key={staff.person.mal_id}
-                      className="flex items-center gap-3 bg-white dark:bg-slate-800 p-2 rounded-lg border border-slate-200 dark:border-slate-700 shadow-sm"
-                    >
-                      <div className="relative w-10 h-10 flex-shrink-0">
-                        <Image
-                          src={
-                            staff.person.images.jpg.image_url ||
-                            "https://placehold.co/40x40?text=?"
-                          }
-                          alt={staff.person.name}
-                          fill
-                          className="object-cover rounded-md"
-                          sizes="40px"
-                        />
-                      </div>
-                      <div className="flex flex-col overflow-hidden">
-                        <p className="text-[11px] font-bold text-indigo-900 dark:text-indigo-300 truncate">
-                          {staff.person.name}
-                        </p>
-                        <p className="text-[9px] text-slate-500 dark:text-slate-400 truncate">
-                          {staff.positions[0] || "Staff"}
-                        </p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
+            {pendingStaff ? (
+              <div className="flex justify-center p-4">
+                <div className="w-6 h-6 border-2 border-indigo-500 border-t-transparent rounded-full animate-spin"></div>
               </div>
+            ) : (
+              animeStaff?.length > 0 && (
+                <div>
+                  <h4 className="font-bold mb-2 border-b border-slate-200 dark:border-slate-700 pb-1 text-sm dark:text-slate-300">
+                    Staff
+                  </h4>
+                  <div className="flex flex-col gap-2">
+                    {animeStaff.slice(0, 5).map((staff) => (
+                      <div
+                        key={staff.person.mal_id}
+                        className="flex items-center gap-3 bg-white dark:bg-slate-800 p-2 rounded-lg border border-slate-200 dark:border-slate-700 shadow-sm"
+                      >
+                        <div className="relative w-10 h-10 flex-shrink-0">
+                          <Image
+                            src={
+                              staff.person.images.jpg.image_url ||
+                              "https://placehold.co/40x40?text=?"
+                            }
+                            alt={staff.person.name}
+                            fill
+                            className="object-cover rounded-md"
+                            sizes="40px"
+                          />
+                        </div>
+                        <div className="flex flex-col overflow-hidden">
+                          <p className="text-[11px] font-bold text-indigo-900 dark:text-indigo-300 truncate">
+                            {staff.person.name}
+                          </p>
+                          <p className="text-[9px] text-slate-500 dark:text-slate-400 truncate">
+                            {staff.positions[0] || "Staff"}
+                          </p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )
             )}
 
             {anime?.producers?.length > 0 && (
@@ -247,100 +254,116 @@ const AnimeDetail = ({ id, user_email, collection, user, commentList }) => {
             </div>
           )}
 
-          {animeChar?.length > 0 && (
-            <div>
-              <h4 className="font-bold mb-2 border-b border-slate-200 dark:border-slate-700 pb-1 text-2xl text-indigo-900 dark:text-indigo-300">
-                Characters
-              </h4>
-              <div className="flex overflow-x-auto gap-3 pb-4 py-2 scrollbar-thin scrollbar-thumb-indigo-200 dark:scrollbar-thumb-indigo-900 scrollbar-track-slate-50 dark:scrollbar-track-slate-800">
-                {animeChar.map((char) => {
-                  const japaneseVA = char?.voice_actors?.find(
-                    (va) => va.language === "Japanese"
-                  );
-                  return (
-                    <div
-                      key={char?.character?.mal_id}
-                      className="min-w-[120px] w-[120px] flex-shrink-0 flex flex-col items-center bg-white dark:bg-slate-800 p-2 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700 snap-start transition-transform hover:scale-105 justify-between"
-                    >
-                      <div className="flex flex-col items-center w-full">
-                        <div className="relative w-full aspect-[3/4] overflow-hidden rounded mb-2 shadow-sm">
-                          <Image
-                            src={
-                              char?.character?.images?.webp?.image_url ||
-                              "https://placehold.co/120x160?text=No+Image"
-                            }
-                            alt={char?.character?.name}
-                            fill
-                            className="object-cover"
-                            sizes="120px"
-                          />
-                        </div>
-                        <p className="text-[10px] font-bold text-center leading-tight line-clamp-2 mb-1 text-indigo-900 dark:text-indigo-300">
-                          {char?.character?.name}
-                        </p>
-                        <p className="text-[9px] text-slate-500 dark:text-slate-400 text-center font-medium bg-slate-100 dark:bg-slate-700 px-2 py-0.5 rounded-full mb-2">
-                          {char?.role}
-                        </p>
-                      </div>
-
-                      {japaneseVA && (
-                        <div className="flex flex-col items-center w-full pt-2 border-t border-dashed border-slate-200 dark:border-slate-600">
-                          <div className="relative w-10 h-10 rounded-full overflow-hidden border border-slate-200 dark:border-slate-600 mb-1">
+          {pendingChar ? (
+            <div className="flex justify-center p-8">
+              <div className="w-8 h-8 border-2 border-indigo-500 border-t-transparent rounded-full animate-spin"></div>
+            </div>
+          ) : (
+            animeChar?.length > 0 && (
+              <div>
+                <h4 className="font-bold mb-2 border-b border-slate-200 dark:border-slate-700 pb-1 text-2xl text-indigo-900 dark:text-indigo-300">
+                  Characters
+                </h4>
+                <div className="flex overflow-x-auto gap-3 pb-4 py-2 scrollbar-thin scrollbar-thumb-indigo-200 dark:scrollbar-thumb-indigo-900 scrollbar-track-slate-50 dark:scrollbar-track-slate-800">
+                  {animeChar.map((char) => {
+                    const japaneseVA = char?.voice_actors?.find(
+                      (va) => va.language === "Japanese",
+                    );
+                    return (
+                      <div
+                        key={char?.character?.mal_id}
+                        className="min-w-[120px] w-[120px] flex-shrink-0 flex flex-col items-center bg-white dark:bg-slate-800 p-2 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700 snap-start transition-transform hover:scale-105 justify-between"
+                      >
+                        <div className="flex flex-col items-center w-full">
+                          <div className="relative w-full aspect-[3/4] overflow-hidden rounded mb-2 shadow-sm">
                             <Image
                               src={
-                                japaneseVA.person.images.jpg.image_url ||
-                                "https://placehold.co/40x40?text=?"
+                                char?.character?.images?.webp?.image_url ||
+                                "https://placehold.co/120x160?text=No+Image"
                               }
-                              alt={japaneseVA.person.name}
+                              alt={char?.character?.name}
                               fill
                               className="object-cover"
-                              sizes="40px"
+                              sizes="120px"
                             />
                           </div>
-                          <p className="text-[9px] text-center leading-tight line-clamp-2 text-slate-700 dark:text-slate-300 font-medium">
-                            {japaneseVA.person.name}
+                          <p className="text-[10px] font-bold text-center leading-tight line-clamp-2 mb-1 text-indigo-900 dark:text-indigo-300">
+                            {char?.character?.name}
                           </p>
-                          <p className="text-[8px] text-slate-400 dark:text-slate-500">Japanese</p>
+                          <p className="text-[9px] text-slate-500 dark:text-slate-400 text-center font-medium bg-slate-100 dark:bg-slate-700 px-2 py-0.5 rounded-full mb-2">
+                            {char?.role}
+                          </p>
                         </div>
-                      )}
-                    </div>
-                  );
-                })}
+
+                        {japaneseVA && (
+                          <div className="flex flex-col items-center w-full pt-2 border-t border-dashed border-slate-200 dark:border-slate-600">
+                            <div className="relative w-10 h-10 rounded-full overflow-hidden border border-slate-200 dark:border-slate-600 mb-1">
+                              <Image
+                                src={
+                                  japaneseVA.person.images.jpg.image_url ||
+                                  "https://placehold.co/40x40?text=?"
+                                }
+                                alt={japaneseVA.person.name}
+                                fill
+                                className="object-cover"
+                                sizes="40px"
+                              />
+                            </div>
+                            <p className="text-[9px] text-center leading-tight line-clamp-2 text-slate-700 dark:text-slate-300 font-medium">
+                              {japaneseVA.person.name}
+                            </p>
+                            <p className="text-[8px] text-slate-400 dark:text-slate-500">
+                              Japanese
+                            </p>
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
               </div>
-            </div>
+            )
           )}
 
-          {animePic?.length > 0 && (
-            <div>
-              <h4 className="text-2xl font-bold mb-4 text-indigo-900 dark:text-indigo-300 border-b border-slate-200 dark:border-slate-700 pb-2">
-                Gallery
-              </h4>
-              <div className="flex overflow-x-auto gap-3 pb-4 scrollbar-thin scrollbar-thumb-indigo-200 dark:scrollbar-thumb-indigo-900 scrollbar-track-slate-50 dark:scrollbar-track-slate-800">
-                {animePic.map((pic, index) => (
-                  <div
-                    key={index}
-                    className="min-w-[200px] h-[300px] flex-shrink-0 relative rounded-lg overflow-hidden shadow-sm border border-slate-200 dark:border-slate-700 snap-start hover:shadow-md transition-all"
-                  >
-                    <Image
-                      src={
-                        pic?.jpg?.large_image_url ||
-                        pic?.jpg?.image_url ||
-                        "https://placehold.co/200x300?text=No+Image"
-                      }
-                      alt={`Gallery ${index}`}
-                      fill
-                      className="object-cover hover:scale-110 transition-transform duration-500"
-                      sizes="200px"
-                    />
-                  </div>
-                ))}
-              </div>
+          {pendingPic ? (
+            <div className="flex justify-center p-8">
+              <div className="w-8 h-8 border-2 border-indigo-500 border-t-transparent rounded-full animate-spin"></div>
             </div>
+          ) : (
+            animePic?.length > 0 && (
+              <div>
+                <h4 className="text-2xl font-bold mb-4 text-indigo-900 dark:text-indigo-300 border-b border-slate-200 dark:border-slate-700 pb-2">
+                  Gallery
+                </h4>
+                <div className="flex overflow-x-auto gap-3 pb-4 scrollbar-thin scrollbar-thumb-indigo-200 dark:scrollbar-thumb-indigo-900 scrollbar-track-slate-50 dark:scrollbar-track-slate-800">
+                  {animePic.map((pic, index) => (
+                    <div
+                      key={index}
+                      className="min-w-[200px] h-[300px] flex-shrink-0 relative rounded-lg overflow-hidden shadow-sm border border-slate-200 dark:border-slate-700 snap-start hover:shadow-md transition-all"
+                    >
+                      <Image
+                        src={
+                          pic?.jpg?.large_image_url ||
+                          pic?.jpg?.image_url ||
+                          "https://placehold.co/200x300?text=No+Image"
+                        }
+                        alt={`Gallery ${index}`}
+                        fill
+                        className="object-cover hover:scale-110 transition-transform duration-500"
+                        sizes="200px"
+                      />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )
           )}
 
           {(anime?.trailer?.youtube_id || anime?.trailer?.embed_url) && (
             <div className="flex flex-col gap-4">
-              <h3 className="text-2xl font-bold text-indigo-900 dark:text-indigo-300">Trailer</h3>
+              <h3 className="text-2xl font-bold text-indigo-900 dark:text-indigo-300">
+                Trailer
+              </h3>
               <div className="w-full aspect-video rounded-xl overflow-hidden shadow-lg border-4 border-white dark:border-slate-700">
                 <iframe
                   src={anime.trailer.embed_url}
