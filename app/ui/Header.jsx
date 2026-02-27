@@ -1,15 +1,19 @@
 import Link from "next/link";
+import { ChevronRight } from "lucide-react";
 
 const Header = ({ title, linkHref, linkTitle, icon: Icon }) => {
   return (
-    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
-      <div className="flex items-center gap-3">
+    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6 mb-8 group/header">
+      <div className="flex items-center gap-4">
         {Icon && (
-          <div className="p-2 rounded-xl bg-indigo-100 dark:bg-indigo-900/50 text-indigo-600 dark:text-indigo-400">
-            <Icon size={24} />
+          <div className="relative">
+             <div className="absolute inset-0 bg-indigo-500/20 blur-lg rounded-full group-hover/header:bg-indigo-500/30 transition-colors"></div>
+             <div className="relative p-3 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/10 text-indigo-600 dark:text-indigo-400 shadow-sm">
+                <Icon size={24} strokeWidth={2.5} />
+             </div>
           </div>
         )}
-        <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white tracking-tight">
+        <h2 className="text-3xl sm:text-4xl font-black text-slate-900 dark:text-white tracking-tight">
           {title}
         </h2>
       </div>
@@ -17,16 +21,10 @@ const Header = ({ title, linkHref, linkTitle, icon: Icon }) => {
       {linkHref && linkTitle ? (
         <Link
           href={linkHref}
-          className="group flex items-center gap-1 text-sm font-semibold text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 transition-colors"
+          className="group flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-100 dark:bg-white/5 text-sm font-bold text-slate-600 dark:text-slate-400 hover:bg-indigo-600 hover:text-white dark:hover:bg-indigo-500 dark:hover:text-white transition-all shadow-sm hover:shadow-md hover:-translate-y-0.5"
         >
           <span>{linkTitle}</span>
-          <svg 
-            xmlns="http://www.w3.org/2000/svg" 
-            className="h-4 w-4 transition-transform group-hover:translate-x-1" 
-            fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}
-          >
-            <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-          </svg>
+          <ChevronRight size={16} className="transition-transform group-hover:translate-x-0.5" />
         </Link>
       ) : null}
     </div>

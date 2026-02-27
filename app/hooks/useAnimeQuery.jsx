@@ -10,6 +10,7 @@ export const useAnimeQuery = ({
   genres = "",
   seasons = "",
   year = "",
+  filter = "",
   enabled = true,
 } = {}) => {
   const [page, setPage] = useState(1);
@@ -17,7 +18,7 @@ export const useAnimeQuery = ({
 
   useEffect(() => {
     setPage(1);
-  }, [searchQuery, genres, seasons, year]);
+  }, [searchQuery, genres, seasons, year, filter]);
 
   const { isPending, error, data, isPlaceholderData } = useQuery({
     queryKey: [
@@ -29,6 +30,7 @@ export const useAnimeQuery = ({
       genres,
       seasons,
       year,
+      filter,
     ],
     queryFn: async () => {
       const params = {
@@ -46,6 +48,7 @@ export const useAnimeQuery = ({
       if (genres) params.genres = genres;
       if (seasons) params.seasons = seasons;
       if (year) params.year = year;
+      if (filter) params.filter = filter;
 
       const url = `${process.env.NEXT_PUBLIC_API_BASE_URL}/${endpoint}`;
       const response = await axios.get(url, { params });

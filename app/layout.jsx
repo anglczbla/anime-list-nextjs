@@ -2,6 +2,7 @@ import { Poppins } from "next/font/google";
 import "./globals.css";
 import Providers from "./providers";
 import Navbar from "./ui/Navbar";
+import NavbarWrapper from "./ui/NavbarWrapper";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -15,7 +16,9 @@ export default function RootLayout({ children }) {
     <html lang="id" suppressHydrationWarning>
       <body className={poppins.className}>
         <Providers>
-          <Navbar />
+          <NavbarWrapper>
+            <Navbar />
+          </NavbarWrapper>
           {children}
         </Providers>
       </body>
